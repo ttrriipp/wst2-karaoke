@@ -81,7 +81,7 @@ function extractYouTubeId(string $url): ?string
         : null;
 }
 
-function fetchYouTubeTitle(string $videoId): ?string
+function fetchYouTubeMetadata(string $videoId): array
 {
     $oembedUrl = 'https://www.youtube.com/oembed?url=' .
         rawurlencode('https://www.youtube.com/watch?v=' . $videoId) .
@@ -126,16 +126,17 @@ function fetchYouTubeTitle(string $videoId): ?string
         }
     }
 
-    if (!is_string($response)) {
-        return null;
-    }
+    if (!is_string($response)) return ['title' => null, 'author' => null];
 
     $metadata = json_decode($response, true);
     $title = is_array($metadata) && isset($metadata['title']) && is_string($metadata['title'])
         ? trim($metadata['title'])
         : '';
+    $author = is_array($metadata) && isset($metadata['author_name']) && is_string($metadata['author_name'])
+        ? trim($metadata['author_name'])
+        : '';
 
-    return $title !== '' ? $title : null;
+    return ['title' => $title !== '' ? $title : null, 'author' => $author !== '' ? $author : null];
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -155,10 +156,12 @@ if (array_key_exists('videoId', $_POST)) {
         ]);
     }
 
+    $metadata = fetchYouTubeMetadata($requestedVideoId);
     respond(200, [
         'success' => true,
         'videoId' => $requestedVideoId,
-        'title' => fetchYouTubeTitle($requestedVideoId)
+        'title' => $metadata['title'],
+        'author' => $metadata['author']
     ]);
 }
 
@@ -175,7 +178,10 @@ if ($videoId === null) {
     ]);
 }
 
+$metadata = fetchYouTubeMetadata($videoId);
 respond(200, [
     'success' => true,
-    'videoId' => $videoId
+    'videoId' => $videoId,
+    'title' => $metadata['title'],
+    'author' => $metadata['author']
 ]);

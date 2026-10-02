@@ -1,0 +1,8 @@
+.karaoke-venv/
+.karaoke_jobs/*
+!.karaoke_jobs/.htaccess
+!.karaoke_jobs/index.html
+__pycache__/
+*.pyc
+.lrclib_cooldown
+/youtube_api_config.php

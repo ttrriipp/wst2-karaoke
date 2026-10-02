@@ -7,12 +7,11 @@ declare(strict_types=1);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1b120d">
+    <link rel="preconnect" href="https://videos.pexels.com">
     <title>Karaokur TV Display</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261002-line-lyrics">
 </head>
 <body class="tv-display-page">
-<div class="page-noise" aria-hidden="true"></div>
-
 <main class="tv-display-shell" id="tvDisplayShell">
     <header class="tv-now-playing">
         <span>NOW PLAYING</span>
@@ -27,7 +26,8 @@ declare(strict_types=1);
             <h2>KARAOKUR</h2>
             <p>READY — CHOOSE A SONG ON THE CONTROLLER</p>
         </div>
-        <video id="tvLocalPlayer" playsinline preload="metadata" hidden></video>
+        <audio id="tvLocalPlayer" preload="metadata" hidden></audio>
+        <video id="tvAmbientFootage" class="tv-ambient-footage" playsinline muted loop preload="none" aria-hidden="true" hidden></video>
         <iframe
             id="tvYoutubePlayer"
             title="YouTube karaoke TV player"
@@ -36,9 +36,14 @@ declare(strict_types=1);
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
         </iframe>
+        <section class="tv-synced-lyrics" id="tvSyncedLyrics" aria-label="Synchronized lyrics" hidden>
+            <p id="tvCurrentLyric"></p>
+            <p id="tvNextLyric"></p>
+        </section>
     </section>
 </main>
 
-<script src="tv.js"></script>
+<script src="lyric_display.js?v=20261002-line-lyrics"></script>
+<script src="tv.js?v=20261002-line-lyrics"></script>
 </body>
 </html>

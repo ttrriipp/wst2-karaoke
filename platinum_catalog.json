@@ -1,0 +1,57 @@
+{
+  "latestListedRelease": {
+    "volume": "Vol. 107",
+    "players": ["Piano", "Flute", "PK-10"],
+    "titlesPubliclyListed": false,
+    "url": "https://platinumkaraoke.com/collections/new-volume-cds-sd-card"
+  },
+  "featuredVolume": "Vol. 106",
+  "sourceUrl": "https://platinumkaraoke.com/collections/new-volume-cds-sd-card",
+  "songs": [
+    {
+      "id": "vol106-opalite",
+      "title": "Opalite",
+      "artist": "Taylor Swift",
+      "volume": "Vol. 106",
+      "series": ["T-X", "Reyna 3/4"],
+      "video": { "videoId": "t5FRhbYSL_s", "title": "Taylor Swift - Opalite (Karaoke Version) with Lyrics On Screen" }
+    },
+    {
+      "id": "vol106-pahina",
+      "title": "Pahina",
+      "artist": "Cup of Joe",
+      "volume": "Vol. 106",
+      "series": ["T-X", "Reyna 3/4"],
+      "video": { "videoId": "xhsZK2Rqwvg", "title": "Pahina - Cup of Joe | Karaoke Version", "channel": "Mi Balmz Karaoke Tracks" }
+    },
+    {
+      "id": "vol106-gnarly",
+      "title": "Gnarly",
+      "artist": "KATSEYE",
+      "volume": "Vol. 106",
+      "series": ["T-X", "Reyna 3/4"],
+      "video": {
+        "videoId": "owgUu6irRSw",
+        "title": "KATSEYE - Gnarly (Karaoke Version)",
+        "channel": "Sing King",
+        "url": "https://www.youtube.com/watch?v=owgUu6irRSw"
+      }
+    },
+    {
+      "id": "vol106-konsensya",
+      "title": "Konsensya",
+      "artist": "IV of Spades",
+      "volume": "Vol. 106",
+      "series": ["T-X", "Reyna 3/4"],
+      "video": { "videoId": "DeGBZ6Yq5ok", "title": "Konsensya - IV Of Spades (Karaoke Version)" }
+    },
+    {
+      "id": "vol106-ikaw-sana-and-nandito-ako",
+      "title": "Ikaw Sana and Nandito Ako",
+      "artist": "Rob Deniel",
+      "volume": "Vol. 106",
+      "series": ["T-X", "Reyna 3/4"],
+      "video": { "videoId": "UmHN6CKBgPU", "title": "Ikaw Sana at Nandito Ako by Rob Deniel (Karaoke)", "channel": "Pinoy Karaoke 2019" }
+    }
+  ]
+}

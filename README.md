@@ -21,11 +21,12 @@ No database is required.
 
 Browser microphone access works on `localhost`. It will usually be blocked if the site is opened from another computer over plain HTTP.
 
-## Video sources
+## Add songs
 
-- Uploaded MP4, WebM, and OGG playback continues to use `upload.php` and the existing `uploads` folder.
-- YouTube watch, `youtu.be`, Shorts, Live, and embed links continue to be checked by `validate_youtube.php`.
-- YouTube playback requires an internet connection.
+- Open **Add Song** and choose **YouTube link**. Paste the link and lyrics with one sung line per line. Karaokur reads the video title, looks for matching timed lines in LRCLIB, and saves the entry only when every supplied line matches in order. **Song details** lets you enter the title and artist if the video title is unclear. This requires an internet connection and a song with synced lyrics in LRCLIB.
+- The lyrics appear beside the YouTube video and advance automatically using the embedded player's playback time. The timings come from a matched song recording, so another arrangement or karaoke version may be out of sync. Karaokur warns when the video length differs substantially from that recording.
+- Choose **Audio or video file** in the same form to add a file from your computer. Uploaded MP4, WebM, OGG, MP3, WAV, and M4A files use `upload.php` and the existing `uploads` folder.
+- YouTube watch, `youtu.be`, Shorts, Live, and embed links are checked by `validate_youtube.php`. The owner must allow embedding for the video to play inside the site.
 
 ## Large uploads
 
@@ -38,6 +39,10 @@ max_execution_time=300
 ```
 
 Save the file and restart Apache. Only expose this local upload app to people you trust.
+
+## Local processor files
+
+The Python, FFmpeg, Demucs, and WhisperX files remain in the folder from an earlier processing flow. The Add Song form does not use that worker. YouTube songs are timed through LRCLIB matching and play in the YouTube player; audio and video file entries play directly.
 
 ## Browser notes
 

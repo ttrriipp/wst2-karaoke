@@ -7,9 +7,14 @@
     const title = document.getElementById("tvSongTitle");
     const idle = document.getElementById("tvIdle");
     const localPlayer = document.getElementById("tvLocalPlayer");
+    const ambientFootage = document.getElementById("tvAmbientFootage");
     const youtubePlayer = document.getElementById("tvYoutubePlayer");
     const shell = document.getElementById("tvDisplayShell");
+    const syncedLyrics = document.getElementById("tvSyncedLyrics");
+    const currentLyric = document.getElementById("tvCurrentLyric");
+    const nextLyric = document.getElementById("tvNextLyric");
     let currentSourceKey = "";
+    let currentState = null;
 
     function sendYoutubeCommand(command, args = []) {
         youtubePlayer.contentWindow?.postMessage(JSON.stringify({
@@ -45,10 +50,19 @@
     }
 
     function clearDisplay() {
+        currentState = null;
+        shell.classList.remove("is-youtube");
+        shell.classList.remove("is-ambient");
+        syncedLyrics.hidden = true;
         currentSourceKey = "";
         localPlayer.pause();
         localPlayer.removeAttribute("src");
+        localPlayer.load();
         localPlayer.hidden = true;
+        ambientFootage.pause();
+        ambientFootage.removeAttribute("src");
+        ambientFootage.load();
+        ambientFootage.hidden = true;
         youtubePlayer.src = "";
         youtubePlayer.hidden = true;
         idle.hidden = false;
@@ -62,6 +76,9 @@
         }
 
         const source = state.source;
+        currentState = state;
+        shell.classList.toggle("is-youtube", source.type === "youtube");
+        shell.classList.toggle("is-ambient", source.type === "upload");
         const sourceKey = `${source.type}:${source.videoId || source.url}`;
         title.textContent = source.title || "Karaoke video";
         idle.hidden = true;
@@ -71,21 +88,57 @@
             if (source.type === "upload") {
                 youtubePlayer.src = "";
                 youtubePlayer.hidden = true;
+                ambientFootage.src = source.visualUrl || "";
+                ambientFootage.hidden = !source.visualUrl;
+                if (source.visualUrl) {
+                    ambientFootage.load();
+                    ambientFootage.play().catch(() => {});
+                }
                 localPlayer.src = source.url;
-                localPlayer.hidden = false;
+                localPlayer.hidden = true;
                 localPlayer.load();
                 localPlayer.addEventListener("loadedmetadata", () => applyPlayback(state), { once: true });
             } else {
                 localPlayer.pause();
+                localPlayer.removeAttribute("src");
+                localPlayer.load();
                 localPlayer.hidden = true;
+                ambientFootage.pause();
+                ambientFootage.removeAttribute("src");
+                ambientFootage.load();
+                ambientFootage.hidden = true;
                 const origin = encodeURIComponent(window.location.origin);
-                youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(source.videoId)}?autoplay=1&controls=0&rel=0&enablejsapi=1&origin=${origin}`;
+                youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(source.videoId)}?autoplay=1&controls=1&rel=0&enablejsapi=1&origin=${origin}`;
                 youtubePlayer.hidden = false;
                 youtubePlayer.addEventListener("load", () => applyPlayback(state), { once: true });
             }
         } else {
             applyPlayback(state);
         }
+        updateLyrics();
+    }
+
+    function updateLyrics() {
+        const cues = currentState?.source?.lyricCues;
+        if (!Array.isArray(cues) || !cues.length || currentState.lyricsVisible === false) {
+            syncedLyrics.hidden = true;
+            return;
+        }
+        syncedLyrics.hidden = false;
+        const time = getExpectedTime(currentState.playback) - (Number(currentState.source?.lyricOffsetSeconds) || 0);
+        let activeIndex = -1;
+        for (let index = 0; index < cues.length; index++) {
+            if (Number(cues[index].start) > time) break;
+            activeIndex = index;
+        }
+        if (activeIndex < 0) {
+            currentLyric.textContent = "Lyrics begin shortly…";
+        } else if (window.KaraokurLyricDisplay) {
+            window.KaraokurLyricDisplay.renderCurrentLine(currentLyric, cues, activeIndex, time);
+        } else {
+            currentLyric.textContent = String(cues[activeIndex].text || "");
+        }
+        nextLyric.textContent = String(cues[activeIndex + 1]?.text || "");
     }
 
     function readSavedState() {
@@ -112,6 +165,7 @@
 
     heartbeat();
     setInterval(heartbeat, 2500);
+    setInterval(updateLyrics, 250);
     readSavedState();
 
     shell.addEventListener("dblclick", () => {

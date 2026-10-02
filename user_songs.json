@@ -1,0 +1,1300 @@
+{
+    "songs": [
+        {
+            "id": "youtube-295ebeaf863bd1cbee71d558e104e75c",
+            "title": "Mr. Brightside",
+            "artist": "The Killers",
+            "video": {
+                "videoId": "YJeSUy4VJGA",
+                "title": "Mr. Brightside — The Killers"
+            },
+            "lyricCues": [
+                {
+                    "text": "Comin' out of my cage and I've been doin' just fine",
+                    "start": 6.54,
+                    "end": 10.09
+                },
+                {
+                    "text": "Gotta, gotta be down because I want it all",
+                    "start": 10.09,
+                    "end": 13.3
+                },
+                {
+                    "text": "It started out with a kiss, how did it end up like this?",
+                    "start": 13.3,
+                    "end": 16.45
+                },
+                {
+                    "text": "It was only a kiss, it was only a kiss",
+                    "start": 16.45,
+                    "end": 19.97
+                },
+                {
+                    "text": "Now I'm falling asleep and she's calling a cab",
+                    "start": 19.97,
+                    "end": 23.22
+                },
+                {
+                    "text": "While he's having a smoke and she's taking a drag",
+                    "start": 23.22,
+                    "end": 26.42
+                },
+                {
+                    "text": "Now they're goin' to bed and my stomach is sick",
+                    "start": 26.42,
+                    "end": 29.62
+                },
+                {
+                    "text": "And it's all in my head, but she's touching his",
+                    "start": 29.62,
+                    "end": 32.53
+                },
+                {
+                    "text": "Chest now",
+                    "start": 32.53,
+                    "end": 33.93
+                },
+                {
+                    "text": "He takes off her dress now",
+                    "start": 33.93,
+                    "end": 37.25
+                },
+                {
+                    "text": "Let me go",
+                    "start": 37.25,
+                    "end": 45.88
+                },
+                {
+                    "text": "And I just can't look, it's killing me",
+                    "start": 45.88,
+                    "end": 51.68
+                },
+                {
+                    "text": "And taking control",
+                    "start": 51.68,
+                    "end": 58.44
+                },
+                {
+                    "text": "Jealousy",
+                    "start": 58.44,
+                    "end": 60.12
+                },
+                {
+                    "text": "Turning saints into the sea",
+                    "start": 60.12,
+                    "end": 63.08
+                },
+                {
+                    "text": "Swimming through sick lullabies",
+                    "start": 63.08,
+                    "end": 66.64
+                },
+                {
+                    "text": "Choking on your alibis",
+                    "start": 66.64,
+                    "end": 69.84
+                },
+                {
+                    "text": "But it's just the price I pay",
+                    "start": 69.84,
+                    "end": 73.08
+                },
+                {
+                    "text": "Destiny is calling me",
+                    "start": 73.08,
+                    "end": 76.24
+                },
+                {
+                    "text": "Open up my eager eyes",
+                    "start": 76.24,
+                    "end": 81.44
+                },
+                {
+                    "text": "'Cause I'm Mr. Brightside",
+                    "start": 81.44,
+                    "end": 97.64
+                },
+                {
+                    "text": "I'm comin' out of my cage and I've been doin' just fine",
+                    "start": 97.64,
+                    "end": 100.99
+                },
+                {
+                    "text": "Gotta, gotta be down because I want it all",
+                    "start": 100.99,
+                    "end": 104.27
+                },
+                {
+                    "text": "It started out with a kiss, how did it end up like this?",
+                    "start": 104.27,
+                    "end": 107.5
+                },
+                {
+                    "text": "(It was only a kiss) It was only a kiss",
+                    "start": 107.5,
+                    "end": 110.9
+                },
+                {
+                    "text": "Now I'm falling asleep and she's calling a cab",
+                    "start": 110.9,
+                    "end": 113.9
+                },
+                {
+                    "text": "While he's havin' a smoke and she's taking a drag",
+                    "start": 113.9,
+                    "end": 117.22
+                },
+                {
+                    "text": "Now they're goin' to bed and my stomach is sick",
+                    "start": 117.22,
+                    "end": 120.42
+                },
+                {
+                    "text": "And it's all in my head, but she's touching his",
+                    "start": 120.42,
+                    "end": 123.34
+                },
+                {
+                    "text": "Chest now",
+                    "start": 123.34,
+                    "end": 124.93
+                },
+                {
+                    "text": "He takes off her dress now",
+                    "start": 124.93,
+                    "end": 128.08
+                },
+                {
+                    "text": "Let me go",
+                    "start": 128.08,
+                    "end": 136.74
+                },
+                {
+                    "text": "'Cause I just can't look, it's killing me",
+                    "start": 136.74,
+                    "end": 142.42
+                },
+                {
+                    "text": "And taking control",
+                    "start": 142.42,
+                    "end": 149.17
+                },
+                {
+                    "text": "Jealousy",
+                    "start": 149.17,
+                    "end": 150.7
+                },
+                {
+                    "text": "Turning saints into the sea",
+                    "start": 150.7,
+                    "end": 154.1
+                },
+                {
+                    "text": "Swimming through sick lullabies",
+                    "start": 154.1,
+                    "end": 157.21
+                },
+                {
+                    "text": "Choking on your alibis",
+                    "start": 157.21,
+                    "end": 160.67
+                },
+                {
+                    "text": "But it's just the price I pay",
+                    "start": 160.67,
+                    "end": 163.78
+                },
+                {
+                    "text": "Destiny is calling me",
+                    "start": 163.78,
+                    "end": 167.15
+                },
+                {
+                    "text": "Open up my eager eyes",
+                    "start": 167.15,
+                    "end": 172.35
+                },
+                {
+                    "text": "'Cause I'm Mr. Brightside",
+                    "start": 172.35,
+                    "end": 188.18
+                },
+                {
+                    "text": "I never",
+                    "start": 188.18,
+                    "end": 194.3
+                },
+                {
+                    "text": "I never",
+                    "start": 194.3,
+                    "end": 200.78
+                },
+                {
+                    "text": "I never",
+                    "start": 200.78,
+                    "end": 207.26
+                },
+                {
+                    "text": "I never",
+                    "start": 207.26,
+                    "end": 213.06
+                }
+            ],
+            "timingReferenceDuration": 248,
+            "timingSource": "lrclib"
+        },
+        {
+            "id": "youtube-03d02fa031c0ee28837168a298bb3d47",
+            "title": "Kalapastangan",
+            "artist": "fitterkarma",
+            "video": {
+                "videoId": "EYmcKf4rnQs",
+                "title": "Kalapastangan — fitterkarma"
+            },
+            "lyricCues": [
+                {
+                    "text": "Oras nang sambahin ang ngalan mo",
+                    "start": 5.22,
+                    "end": 17.02
+                },
+                {
+                    "text": "Para mabuhay habambuhay sa puso't isipan mo",
+                    "start": 17.02,
+                    "end": 28.86
+                },
+                {
+                    "text": "Sino ba ako para mapansin mo",
+                    "start": 28.86,
+                    "end": 40.7
+                },
+                {
+                    "text": "Mga dalangin ko sa'yo sana'y pakinggan mo",
+                    "start": 40.7,
+                    "end": 64.49
+                },
+                {
+                    "text": "Pa'no ba ako magiging 'sang santo",
+                    "start": 64.49,
+                    "end": 76.28
+                },
+                {
+                    "text": "Para makasama kita diyan sa tabi ng trono mo",
+                    "start": 76.28,
+                    "end": 88.21
+                },
+                {
+                    "text": "Ilan pa'ng pagsubok ang daraanan ko",
+                    "start": 88.21,
+                    "end": 99.97
+                },
+                {
+                    "text": "Bago ako makaranas ng mga milagro mo",
+                    "start": 99.97,
+                    "end": 129.53
+                },
+                {
+                    "text": "O ang langit ay nandito lamang pala sa lupa",
+                    "start": 129.53,
+                    "end": 138.49
+                },
+                {
+                    "text": "At ang impyerno ay nasa isipan ko at pinalimot ng iyong ganda",
+                    "start": 138.49,
+                    "end": 147.74
+                },
+                {
+                    "text": "Umaawit ang mga anghel",
+                    "start": 147.74,
+                    "end": 152.1
+                },
+                {
+                    "text": "Umaawit ang mga anghel",
+                    "start": 152.1,
+                    "end": 156.5
+                },
+                {
+                    "text": "Nagdiriwang sila nang makasama kita",
+                    "start": 156.5,
+                    "end": 160.94
+                },
+                {
+                    "text": "Huwag ka sanang mawawala",
+                    "start": 160.94,
+                    "end": 183.37
+                },
+                {
+                    "text": "Mamamatay akong nakangiti",
+                    "start": 183.37,
+                    "end": 187.62
+                },
+                {
+                    "text": "Kapag ikaw ang nasa aking tabi",
+                    "start": 187.62,
+                    "end": 191.9
+                },
+                {
+                    "text": "Mabubuhay akong nagsisisi",
+                    "start": 191.9,
+                    "end": 196.54
+                },
+                {
+                    "text": "Kapag isang araw hindi kita mapangiti",
+                    "start": 196.54,
+                    "end": 201.02
+                },
+                {
+                    "text": "Kalapastangan ang 'di ka ibigin",
+                    "start": 201.02,
+                    "end": 205.58
+                },
+                {
+                    "text": "Kalokohan ang 'di ka isipin",
+                    "start": 205.58,
+                    "end": 209.82
+                },
+                {
+                    "text": "Kung ang mundo ay biglang gugunawin",
+                    "start": 209.82,
+                    "end": 213.57
+                },
+                {
+                    "text": "Ikaw ang una kong hahanapin",
+                    "start": 213.57,
+                    "end": 247.21
+                }
+            ],
+            "timingReferenceDuration": 261,
+            "timingSource": "lrclib"
+        },
+        {
+            "id": "youtube-e14fb78075274b24275a5dddc7b26678",
+            "title": "Weng Weng",
+            "artist": "uncle dags",
+            "video": {
+                "videoId": "xk5YU7yRrxM",
+                "title": "Weng Weng — uncle dags"
+            },
+            "lyricCues": [],
+            "timingReferenceDuration": null,
+            "timingSource": null
+        },
+        {
+            "id": "youtube-a11aec6005ace4cade86672a91953481",
+            "title": "Wag na wag mong sasabihin",
+            "artist": "Kitchie Nadal",
+            "video": {
+                "videoId": "bgvUTnfZav4",
+                "title": "Wag na wag mong sasabihin — Kitchie Nadal"
+            },
+            "lyricCues": [
+                {
+                    "text": "May gusto ka bang sabihin?",
+                    "start": 24.85,
+                    "end": 29.29
+                },
+                {
+                    "text": "Ba't 'di mapakali? Ni hindi makatingin",
+                    "start": 29.29,
+                    "end": 34.39
+                },
+                {
+                    "text": "Sana'y huwag mo na 'tong palipasin",
+                    "start": 34.39,
+                    "end": 41.13
+                },
+                {
+                    "text": "At subukang lutasin sa mga isinabi mo na",
+                    "start": 41.13,
+                    "end": 47.16
+                },
+                {
+                    "text": "Iba'ng nararapat sa akin",
+                    "start": 47.16,
+                    "end": 52.7
+                },
+                {
+                    "text": "Na tunay 'kong mamahalin",
+                    "start": 52.7,
+                    "end": 61.67
+                },
+                {
+                    "text": "Oh, whoa, whoa, huwag na huwag mong sasabihin",
+                    "start": 61.67,
+                    "end": 70.48
+                },
+                {
+                    "text": "Na hindi mo nadama itong",
+                    "start": 70.48,
+                    "end": 73.61
+                },
+                {
+                    "text": "Pag-ibig kong handang ibigay",
+                    "start": 73.61,
+                    "end": 77.47
+                },
+                {
+                    "text": "Kahit pa'ng kalayaan mo",
+                    "start": 77.47,
+                    "end": 86.1
+                },
+                {
+                    "text": "Ano man ang naakala",
+                    "start": 86.1,
+                    "end": 90.65
+                },
+                {
+                    "text": "Na ako'y isang bituin na walang sasambahin",
+                    "start": 90.65,
+                    "end": 98.14
+                },
+                {
+                    "text": "'Di ko man ito ipakita",
+                    "start": 98.14,
+                    "end": 102.45
+                },
+                {
+                    "text": "Abot-langit ang daing sa mga isinabi mo na",
+                    "start": 102.45,
+                    "end": 108.47
+                },
+                {
+                    "text": "Iba'ng nararapat sa akin",
+                    "start": 108.47,
+                    "end": 114.07
+                },
+                {
+                    "text": "Na tunay 'kong mamahalin",
+                    "start": 114.07,
+                    "end": 123.14
+                },
+                {
+                    "text": "Oh, whoa, whoa, huwag na huwag mong sasabihin",
+                    "start": 123.14,
+                    "end": 131.77
+                },
+                {
+                    "text": "Na hindi mo nadama itong",
+                    "start": 131.77,
+                    "end": 135.07
+                },
+                {
+                    "text": "Pag-ibig kong handang ibigay",
+                    "start": 135.07,
+                    "end": 139.19
+                },
+                {
+                    "text": "Kahit pa'ng kalayaan mo",
+                    "start": 139.19,
+                    "end": 146.93
+                },
+                {
+                    "text": "At sa gabi, sino'ng duduyan sa 'yo?",
+                    "start": 146.93,
+                    "end": 153.03
+                },
+                {
+                    "text": "At sa umaga, ang hangin na'ng hahaplos sa 'yo (oh)",
+                    "start": 153.03,
+                    "end": 161.28
+                },
+                {
+                    "text": "Oh, whoa, whoa, huwag na huwag mong sasabihin",
+                    "start": 161.28,
+                    "end": 169.76
+                },
+                {
+                    "text": "Na hindi mo nadama itong",
+                    "start": 169.76,
+                    "end": 173.12
+                },
+                {
+                    "text": "Pag-ibig kong handang ibigay",
+                    "start": 173.12,
+                    "end": 177.07
+                },
+                {
+                    "text": "Kahit pa'ng kalayaan mo",
+                    "start": 177.07,
+                    "end": 184.72
+                },
+                {
+                    "text": "Oh, whoa, whoa, huwag na huwag mong sasabihin",
+                    "start": 184.72,
+                    "end": 193.26
+                },
+                {
+                    "text": "Na hindi mo nadama itong",
+                    "start": 193.26,
+                    "end": 196.4
+                },
+                {
+                    "text": "Pag-ibig kong handang ibigay",
+                    "start": 196.4,
+                    "end": 200.48
+                },
+                {
+                    "text": "Kahit pa'ng kalayaan mo",
+                    "start": 200.48,
+                    "end": 208.13
+                },
+                {
+                    "text": "Oh, whoa, whoa",
+                    "start": 208.13,
+                    "end": 214.06
+                },
+                {
+                    "text": "Oh, whoa, whoa",
+                    "start": 214.06,
+                    "end": 219.76
+                },
+                {
+                    "text": "Oh, whoa, whoa, huwag na huwag mong sasabihin",
+                    "start": 219.76,
+                    "end": 228.21
+                },
+                {
+                    "text": "Na hindi mo nadama itong",
+                    "start": 228.21,
+                    "end": 231.59
+                },
+                {
+                    "text": "Pag-ibig kong handang ibigay",
+                    "start": 231.59,
+                    "end": 235.53
+                },
+                {
+                    "text": "Kahit pa'ng kalayaan mo",
+                    "start": 235.53,
+                    "end": 239.53
+                }
+            ],
+            "timingReferenceDuration": 249,
+            "timingSource": "lrclib"
+        },
+        {
+            "id": "youtube-66f56ee6d8083fdcbcfb265231988aff",
+            "title": "Lips of an angel",
+            "artist": "Hinder",
+            "video": {
+                "videoId": "MQqNLmh1kso",
+                "title": "Lips of an angel — Hinder"
+            },
+            "lyricCues": [
+                {
+                    "text": "Honey, why you calling me so late?",
+                    "start": 8.38,
+                    "end": 15.15
+                },
+                {
+                    "text": "It's kinda of hard to talk right now",
+                    "start": 15.15,
+                    "end": 22.04
+                },
+                {
+                    "text": "Honey, why you crying? Is everything OK?",
+                    "start": 22.04,
+                    "end": 29.8
+                },
+                {
+                    "text": "I got to whisper 'cause I can't be too loud",
+                    "start": 29.8,
+                    "end": 36.09
+                },
+                {
+                    "text": "Oh well, my girl's in the next room",
+                    "start": 36.09,
+                    "end": 41.02
+                },
+                {
+                    "text": "Sometimes, I wish she was you",
+                    "start": 41.02,
+                    "end": 44.78
+                },
+                {
+                    "text": "I guess we never really moved on",
+                    "start": 44.78,
+                    "end": 50.85
+                },
+                {
+                    "text": "It's really good to hear your voice saying my name",
+                    "start": 50.85,
+                    "end": 55.32
+                },
+                {
+                    "text": "It sounds so sweet",
+                    "start": 55.32,
+                    "end": 58.21
+                },
+                {
+                    "text": "Coming from the lips of an angel",
+                    "start": 58.21,
+                    "end": 61.12
+                },
+                {
+                    "text": "Hearing those words it makes me weak",
+                    "start": 61.12,
+                    "end": 65.79
+                },
+                {
+                    "text": "And I never want to say goodbye",
+                    "start": 65.79,
+                    "end": 71.67
+                },
+                {
+                    "text": "But girl, you make it hard to be faithful",
+                    "start": 71.67,
+                    "end": 79.15
+                },
+                {
+                    "text": "With the lips of an angel",
+                    "start": 79.15,
+                    "end": 84.58
+                },
+                {
+                    "text": "It's funny that you're calling me tonight",
+                    "start": 89.44,
+                    "end": 96.81
+                },
+                {
+                    "text": "And yes, I dreamt of you too",
+                    "start": 96.81,
+                    "end": 103.95
+                },
+                {
+                    "text": "Does he know you're talking to me?",
+                    "start": 103.95,
+                    "end": 108
+                },
+                {
+                    "text": "Will it start a fight?",
+                    "start": 108,
+                    "end": 111.88
+                },
+                {
+                    "text": "No, I don't think she has a clue",
+                    "start": 111.88,
+                    "end": 118.06
+                },
+                {
+                    "text": "Oh well, my girl's in the next room",
+                    "start": 118.06,
+                    "end": 122.88
+                },
+                {
+                    "text": "Sometimes, I wish she was you",
+                    "start": 122.88,
+                    "end": 126.54
+                },
+                {
+                    "text": "I guess we never really moved on",
+                    "start": 126.54,
+                    "end": 132.58
+                },
+                {
+                    "text": "It's really good to hear your voice saying my name",
+                    "start": 132.58,
+                    "end": 137.02
+                },
+                {
+                    "text": "It sounds so sweet",
+                    "start": 137.02,
+                    "end": 139.95
+                },
+                {
+                    "text": "Coming from the lips of an angel",
+                    "start": 139.95,
+                    "end": 142.97
+                },
+                {
+                    "text": "Hearing those words; it makes me weak",
+                    "start": 142.97,
+                    "end": 147.51
+                },
+                {
+                    "text": "And I never wanna say goodbye",
+                    "start": 147.51,
+                    "end": 153.55
+                },
+                {
+                    "text": "But girl, you make it hard to be faithful",
+                    "start": 153.55,
+                    "end": 161.05
+                },
+                {
+                    "text": "With the lips of an angel",
+                    "start": 161.05,
+                    "end": 173.19
+                },
+                {
+                    "text": "It's really good to hear your voice saying my name",
+                    "start": 192.43,
+                    "end": 196.68
+                },
+                {
+                    "text": "It sounds so sweet",
+                    "start": 196.68,
+                    "end": 200.14
+                },
+                {
+                    "text": "Coming from the lips of an angel",
+                    "start": 200.14,
+                    "end": 202.69
+                },
+                {
+                    "text": "Hearing those words; it makes me weak",
+                    "start": 202.69,
+                    "end": 207.02
+                },
+                {
+                    "text": "And I never wanna say goodbye",
+                    "start": 207.02,
+                    "end": 212.94
+                },
+                {
+                    "text": "But girl, you make it hard to be faithful",
+                    "start": 212.94,
+                    "end": 220.58
+                },
+                {
+                    "text": "With the lips of an angel",
+                    "start": 220.58,
+                    "end": 223.75
+                },
+                {
+                    "text": "And I never wanna say goodbye",
+                    "start": 223.75,
+                    "end": 227.83
+                },
+                {
+                    "text": "But girl, you make it hard to be faithful",
+                    "start": 227.83,
+                    "end": 235.33
+                },
+                {
+                    "text": "With the lips of an angel",
+                    "start": 235.33,
+                    "end": 242.95
+                },
+                {
+                    "text": "Honey, why you calling me so late?",
+                    "start": 245.98,
+                    "end": 250.93
+                }
+            ],
+            "timingReferenceDuration": 259,
+            "timingSource": "lrclib"
+        },
+        {
+            "id": "youtube-31a3fdb25c96ab1b1c132a060f8ae474",
+            "title": "214",
+            "artist": "Rivermaya",
+            "video": {
+                "videoId": "hNmgGtSTqb8",
+                "title": "214 — Rivermaya"
+            },
+            "lyricCues": [],
+            "timingReferenceDuration": null,
+            "timingSource": null
+        },
+        {
+            "id": "youtube-f27e7a661ceadc7e26696a3d01eb20b3",
+            "title": "Moment of truth",
+            "artist": "FM Static",
+            "video": {
+                "videoId": "mEQdu4cASS8",
+                "title": "Moment of truth — FM Static"
+            },
+            "lyricCues": [
+                {
+                    "text": "Here we are",
+                    "start": 13.94,
+                    "end": 15.89
+                },
+                {
+                    "text": "In the best years of our lives",
+                    "start": 15.89,
+                    "end": 18.29
+                },
+                {
+                    "text": "With no way of knowing",
+                    "start": 18.29,
+                    "end": 21.13
+                },
+                {
+                    "text": "When the wheel will stop spinning",
+                    "start": 21.13,
+                    "end": 22.9
+                },
+                {
+                    "text": "Cause we don't know where we're going",
+                    "start": 22.9,
+                    "end": 26.16
+                },
+                {
+                    "text": "And here we are",
+                    "start": 26.16,
+                    "end": 29.09
+                },
+                {
+                    "text": "On the best day of our lives",
+                    "start": 29.09,
+                    "end": 32.28
+                },
+                {
+                    "text": "And it's a go",
+                    "start": 32.28,
+                    "end": 33.89
+                },
+                {
+                    "text": "Let's make it last",
+                    "start": 33.89,
+                    "end": 34.94
+                },
+                {
+                    "text": "So cheers you all to that",
+                    "start": 34.94,
+                    "end": 36.2
+                },
+                {
+                    "text": "'Cause this moment's never comin' back",
+                    "start": 36.2,
+                    "end": 39.51
+                },
+                {
+                    "text": "I used to know her brother",
+                    "start": 39.51,
+                    "end": 41.29
+                },
+                {
+                    "text": "But I never knew I loved her",
+                    "start": 41.29,
+                    "end": 42.91
+                },
+                {
+                    "text": "'Til the day she laid her eyes on me",
+                    "start": 42.91,
+                    "end": 45.82
+                },
+                {
+                    "text": "Now I'm jumpin' up and down",
+                    "start": 45.82,
+                    "end": 47.9
+                },
+                {
+                    "text": "She's the only one around",
+                    "start": 47.9,
+                    "end": 49.53
+                },
+                {
+                    "text": "And she means every little thing to me",
+                    "start": 49.53,
+                    "end": 52.35
+                },
+                {
+                    "text": "I've got your picture in my wallet",
+                    "start": 52.35,
+                    "end": 55.8
+                },
+                {
+                    "text": "And your phone number to call it",
+                    "start": 55.8,
+                    "end": 59.32
+                },
+                {
+                    "text": "And I miss you more",
+                    "start": 59.32,
+                    "end": 61.42
+                },
+                {
+                    "text": "Whenever I think about you",
+                    "start": 61.42,
+                    "end": 65.65
+                },
+                {
+                    "text": "I've got your mixtape in my Walkman",
+                    "start": 65.65,
+                    "end": 69.12
+                },
+                {
+                    "text": "Been so long since we've been talkin'",
+                    "start": 69.12,
+                    "end": 72.87
+                },
+                {
+                    "text": "And in a few more days",
+                    "start": 72.87,
+                    "end": 74.8
+                },
+                {
+                    "text": "We'll both hooked up, forever and ever",
+                    "start": 74.8,
+                    "end": 80.59
+                },
+                {
+                    "text": "And here I am",
+                    "start": 80.59,
+                    "end": 82.25
+                },
+                {
+                    "text": "On the west coast of America",
+                    "start": 82.25,
+                    "end": 86.28
+                },
+                {
+                    "text": "And I've been tryin' to think for weeks",
+                    "start": 86.28,
+                    "end": 90.59
+                },
+                {
+                    "text": "Of all the ways to ask you",
+                    "start": 90.59,
+                    "end": 93.65
+                },
+                {
+                    "text": "And now I've brought you to the place",
+                    "start": 93.65,
+                    "end": 97.14
+                },
+                {
+                    "text": "Where I've poured my heart out",
+                    "start": 97.14,
+                    "end": 99.94
+                },
+                {
+                    "text": "A million times, for a million reasons",
+                    "start": 99.94,
+                    "end": 103.74
+                },
+                {
+                    "text": "To offer it to you",
+                    "start": 103.74,
+                    "end": 106.34
+                },
+                {
+                    "text": "I used to know her brother",
+                    "start": 106.34,
+                    "end": 108.08
+                },
+                {
+                    "text": "But I never knew I loved her",
+                    "start": 108.08,
+                    "end": 109.54
+                },
+                {
+                    "text": "'Til the day she laid her eyes on me",
+                    "start": 109.54,
+                    "end": 112.31
+                },
+                {
+                    "text": "Now I'm jumpin' up and down",
+                    "start": 112.31,
+                    "end": 114.67
+                },
+                {
+                    "text": "She's the only one around",
+                    "start": 114.67,
+                    "end": 116.12
+                },
+                {
+                    "text": "And she means every little thing to me",
+                    "start": 116.12,
+                    "end": 119.02
+                },
+                {
+                    "text": "I've got your picture in my wallet",
+                    "start": 119.02,
+                    "end": 122.44
+                },
+                {
+                    "text": "And your Phone number to call it",
+                    "start": 122.44,
+                    "end": 126.06
+                },
+                {
+                    "text": "And I miss you more",
+                    "start": 126.06,
+                    "end": 128.07
+                },
+                {
+                    "text": "Whenever I think about you",
+                    "start": 128.07,
+                    "end": 132.19
+                },
+                {
+                    "text": "I've got your mixtape in my Walkman",
+                    "start": 132.19,
+                    "end": 135.78
+                },
+                {
+                    "text": "Been so long since we've been talkin'",
+                    "start": 135.78,
+                    "end": 139.32
+                },
+                {
+                    "text": "And in a few more days",
+                    "start": 139.32,
+                    "end": 141.42
+                },
+                {
+                    "text": "We'll both hookep up, forever and ever",
+                    "start": 141.42,
+                    "end": 146.68
+                },
+                {
+                    "text": "I used to know her brother",
+                    "start": 172.88,
+                    "end": 174.68
+                },
+                {
+                    "text": "But I never knew I loved her",
+                    "start": 174.68,
+                    "end": 176.2
+                },
+                {
+                    "text": "'Til the day she laid her eyes on me",
+                    "start": 176.2,
+                    "end": 178.9
+                },
+                {
+                    "text": "Now I'm jumpin' up and down",
+                    "start": 178.9,
+                    "end": 181.16
+                },
+                {
+                    "text": "She's the only one around",
+                    "start": 181.16,
+                    "end": 182.63
+                },
+                {
+                    "text": "And she means every little thing to me",
+                    "start": 182.63,
+                    "end": 185.76
+                },
+                {
+                    "text": "I've got your picture in my wallet",
+                    "start": 185.76,
+                    "end": 189.12
+                },
+                {
+                    "text": "And your Phone number to call it",
+                    "start": 189.12,
+                    "end": 192.65
+                },
+                {
+                    "text": "And I miss you more",
+                    "start": 192.65,
+                    "end": 194.75
+                },
+                {
+                    "text": "Whenever I think about you",
+                    "start": 194.75,
+                    "end": 198.88
+                },
+                {
+                    "text": "I've got your mixtape in my Walkman",
+                    "start": 198.88,
+                    "end": 202.47
+                },
+                {
+                    "text": "Been so long since we've been talkin'",
+                    "start": 202.47,
+                    "end": 206.06
+                },
+                {
+                    "text": "And in a few more days",
+                    "start": 206.06,
+                    "end": 208.57
+                },
+                {
+                    "text": "We'll both hooked up, forever and ever",
+                    "start": 208.57,
+                    "end": 213.08
+                }
+            ],
+            "timingReferenceDuration": 227,
+            "timingSource": "lrclib"
+        },
+        {
+            "id": "youtube-7c22555cfeb76a8fa2d40982efdc8bb6",
+            "title": "Syempre",
+            "artist": "Willie Revillame",
+            "video": {
+                "videoId": "SM3IjyrJxzo",
+                "title": "Syempre — Willie Revillame"
+            },
+            "lyricCues": [
+                {
+                    "text": "Lagi mong tinatanong sa akin",
+                    "start": 12.08,
+                    "end": 16.55
+                },
+                {
+                    "text": "Kung tunay ang pagibig ko",
+                    "start": 16.55,
+                    "end": 23.2
+                },
+                {
+                    "text": "Basta't ang lagi mo na iisipin",
+                    "start": 23.2,
+                    "end": 27.96
+                },
+                {
+                    "text": "Tanging ikaw ang siyang lahat sa akin",
+                    "start": 27.96,
+                    "end": 34.85
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 34.85,
+                    "end": 38.78
+                },
+                {
+                    "text": "Ang aking iibigin ang aking hahanapin",
+                    "start": 38.78,
+                    "end": 44.57
+                },
+                {
+                    "text": "Ang aking susuyuin ang aking yayakapin",
+                    "start": 44.57,
+                    "end": 50.49
+                },
+                {
+                    "text": "Sa araw at gabi ikaw lang sa akin oh",
+                    "start": 50.49,
+                    "end": 57.58
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 57.58,
+                    "end": 61.55
+                },
+                {
+                    "text": "Ang aking iisipin ang aking tatawagin",
+                    "start": 61.55,
+                    "end": 67.46
+                },
+                {
+                    "text": "Ang nais kong kapiling 'pag may paglalambing oh",
+                    "start": 67.46,
+                    "end": 74.72
+                },
+                {
+                    "text": "S'yempre ikaw lamang para sa akin",
+                    "start": 74.72,
+                    "end": 91.86
+                },
+                {
+                    "text": "Pagibig ko sa'yo'y paniwalaan",
+                    "start": 91.86,
+                    "end": 96.53
+                },
+                {
+                    "text": "Laging ikaw kailan pa man",
+                    "start": 96.53,
+                    "end": 103.08
+                },
+                {
+                    "text": "Pangako na hindi ka iiwanan",
+                    "start": 103.08,
+                    "end": 108.1
+                },
+                {
+                    "text": "Pagmamahal para sa'yo ay ganyan",
+                    "start": 108.1,
+                    "end": 114.88
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 114.88,
+                    "end": 118.66
+                },
+                {
+                    "text": "Ang aking iibigin ang aking hahanapin",
+                    "start": 118.66,
+                    "end": 124.47
+                },
+                {
+                    "text": "Ang aking susuyuin ang aking yayakapin",
+                    "start": 124.47,
+                    "end": 130.53
+                },
+                {
+                    "text": "Sa araw at gabi ikaw lang sa akin oh",
+                    "start": 130.53,
+                    "end": 137.51
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 137.51,
+                    "end": 141.64
+                },
+                {
+                    "text": "Ang aking iisipin ang aking tatawagin",
+                    "start": 141.64,
+                    "end": 147.37
+                },
+                {
+                    "text": "Ang nais kong kapiling 'pag may paglalambing oh",
+                    "start": 147.37,
+                    "end": 154.71
+                },
+                {
+                    "text": "S'yempre ikaw lamang para sa akin",
+                    "start": 154.71,
+                    "end": 180.63
+                },
+                {
+                    "text": "Oh",
+                    "start": 180.63,
+                    "end": 183.23
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 183.23,
+                    "end": 187.25
+                },
+                {
+                    "text": "Ang aking iibigin ang aking hahanapin",
+                    "start": 187.25,
+                    "end": 193.04
+                },
+                {
+                    "text": "Ang aking susuyuin ang aking yayakapin",
+                    "start": 193.04,
+                    "end": 198.79
+                },
+                {
+                    "text": "Sa araw at gabi ikaw lang sa akin oh",
+                    "start": 198.79,
+                    "end": 206.03
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 206.03,
+                    "end": 210.08
+                },
+                {
+                    "text": "Ang aking iisipin ang aking tatawagin",
+                    "start": 210.08,
+                    "end": 215.86
+                },
+                {
+                    "text": "Ang nais kong kapiling 'pag may paglalambing oh",
+                    "start": 215.86,
+                    "end": 223.13
+                },
+                {
+                    "text": "S'yempre ikaw lamang para sa akin",
+                    "start": 223.13,
+                    "end": 235.01
+                },
+                {
+                    "text": "S'yempre ikaw lang",
+                    "start": 235.01
+                }
+            ],
+            "timingReferenceDuration": 250,
+            "timingSource": "lrclib"
+        }
+    ]
+}

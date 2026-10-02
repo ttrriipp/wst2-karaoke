@@ -2,19 +2,46 @@
     "use strict";
 
     const $ = (id) => document.getElementById(id);
+    const libraryTab = $("libraryTab");
     const uploadTab = $("uploadTab");
-    const youtubeTab = $("youtubeTab");
+    const libraryPanel = $("libraryPanel");
     const uploadPanel = $("uploadPanel");
-    const youtubePanel = $("youtubePanel");
+    const librarySearch = $("librarySearch");
+    const libraryList = $("libraryList");
+    const libraryCount = $("libraryCount");
+    const favoritesFilter = $("favoritesFilter");
+    const libraryQueue = $("libraryQueue");
+    const queueList = $("queueList");
+    const queueCount = $("queueCount");
+    const clearQueueButton = $("clearQueueButton");
     const uploadForm = $("uploadForm");
-    const youtubeForm = $("youtubeForm");
+    const youtubeSongFields = $("youtubeSongFields");
+    const fileSongFields = $("fileSongFields");
+    const songLyrics = $("songLyrics");
+    const songDetails = $("songDetails");
+    const songDetailsSummary = $("songDetailsSummary");
     const videoFile = $("videoFile");
+    const fileSongLyrics = $("fileSongLyrics");
+    const songTitle = $("songTitle");
+    const songArtist = $("songArtist");
+    const findInstrumentalButton = $("findInstrumentalButton");
+    const youtubeSearchResults = $("youtubeSearchResults");
+    const youtubeSearchStatus = $("youtubeSearchStatus");
+    const youtubeSearchResultList = $("youtubeSearchResultList");
     const selectedFile = $("selectedFile");
     const dropZone = $("dropZone");
     const youtubeUrl = $("youtubeUrl");
     const uploadButton = $("uploadButton");
-    const youtubeButton = $("youtubeButton");
-    const stopButton = $("stopButton");
+    const syncedLyrics = $("syncedLyrics");
+    const currentLyric = $("currentLyric");
+    const nextLyric = $("nextLyric");
+    const lyricNote = $("lyricNote");
+    const lyricsVisibilityToggle = $("lyricsVisibilityToggle");
+    const lyricsVisibilityLabel = $("lyricsVisibilityLabel");
+    const lyricsSyncControls = $("lyricsSyncControls");
+    const lyricsSyncRange = $("lyricsSyncRange");
+    const lyricsSyncValue = $("lyricsSyncValue");
+    const lyricsSyncReset = $("lyricsSyncReset");
     const currentSong = $("currentSong");
     const message = $("message");
     const idleScreen = $("idleScreen");
@@ -22,6 +49,7 @@
     const staticContext = staticLayer?.getContext("2d", { alpha: false });
     const crtScreen = $("crtScreen");
     const localPlayer = $("localPlayer");
+    const ambientFootage = $("ambientFootage");
     const youtubePlayer = $("youtubePlayer");
     const playbackControls = $("playbackControls");
     const playbackTime = $("playbackTime");
@@ -52,12 +80,32 @@
     const cdDisc = $("cdDisc");
     const cdTrackTitle = $("cdTrackTitle");
     const cdStatus = $("cdStatus");
+    const removeSongDialog = $("removeSongDialog");
+    const removeSongDialogName = $("removeSongDialogName");
+    const removeSongDialogFileNote = $("removeSongDialogFileNote");
+    const cancelRemoveSongButton = $("cancelRemoveSong");
+    const confirmRemoveSongButton = $("confirmRemoveSong");
 
     const MAX_FILE_SIZE = 500 * 1024 * 1024;
-    const ALLOWED_TYPES = ["video/mp4", "video/webm", "video/ogg"];
-    const ALLOWED_EXTENSIONS = ["mp4", "webm", "ogg"];
+    const ALLOWED_TYPES = [
+        "video/mp4", "video/webm", "video/ogg",
+        "audio/ogg", "audio/mpeg", "audio/mp3", "audio/wav", "audio/x-wav", "audio/mp4", "audio/x-m4a"
+    ];
+    const ALLOWED_EXTENSIONS = ["mp4", "webm", "ogg", "mp3", "wav", "m4a"];
+    const CALMING_FOOTAGE = [
+        "https://videos.pexels.com/video-files/35680193/15120521_1920_1080_25fps.mp4",
+        "https://videos.pexels.com/video-files/3010831/3010831-hd_1920_1080_24fps.mp4",
+        "https://videos.pexels.com/video-files/30608661/13105334_1920_1080_30fps.mp4",
+        "https://videos.pexels.com/video-files/36637679/15533105_1920_1080_25fps.mp4",
+        "https://videos.pexels.com/video-files/3493297/3493297-hd_1920_1080_30fps.mp4"
+    ];
     const STORAGE_KEY = "karaokur-display-state-v1";
+    const LYRIC_OFFSETS_KEY = "karaokur-lyric-offsets-v1";
     const CONTROL_MODE_KEY = "karaokur-control-mode-v1";
+    const FAVORITES_KEY = "karaokur-library-favorites-v1";
+    const QUEUE_KEY = "karaokur-library-queue-v1";
+    const UNAVAILABLE_YOUTUBE_KEY = "karaokur-unavailable-youtube-v1";
+    const UNAVAILABLE_LOCAL_KEY = "karaokur-unavailable-local-v1";
     const CHANNEL_NAME = "karaokur-tv-channel-v1";
     const channel = "BroadcastChannel" in window ? new BroadcastChannel(CHANNEL_NAME) : null;
     let microphone = null;
@@ -67,14 +115,28 @@
     let youtubeApiPlayer = null;
     let youtubeApiPromise = null;
     let youtubeProgressTimer = null;
+    let selectedYouTubeCandidate = null;
+    let playbackControlsHideTimer = null;
+    let playbackControlsWerePlaying = false;
     let playbackRequestId = 0;
+    let lastAmbientFootageUrl = "";
+    let ambientFootageActive = false;
+    const unavailableAmbientFootage = new Set();
     let supportedYoutubeRates = [1];
+    let karaokeCatalog = [];
+    let showFavoritesOnly = false;
+    let favoriteSongIds = readStoredList(FAVORITES_KEY);
+    let queuedSongIds = readStoredList(QUEUE_KEY);
+    let unavailableYoutubeVideoIds = readStoredList(UNAVAILABLE_YOUTUBE_KEY);
+    let unavailableLocalSongIds = readStoredList(UNAVAILABLE_LOCAL_KEY);
+    let lyricOffsets = readStoredMap(LYRIC_OFFSETS_KEY);
     let staticFrame = null;
     let staticTimer = null;
     const reduceStaticMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let state = {
         source: null,
         cleared: true,
+        lyricsVisible: true,
         playback: { action: "pause", currentTime: 0, updatedAt: Date.now() },
         settings: { micVolume: 100, micEcho: 0, videoVolume: 80 }
     };
@@ -123,7 +185,7 @@
         const source = state.source && !state.cleared ? state.source : null;
         const selectedFile = videoFile.files[0];
         const selectedTitle = selectedFile
-            ? selectedFile.name.replace(/\.[^.]+$/, "") || "Uploaded karaoke video"
+            ? getUploadTitle(selectedFile)
             : "NO DISC LOADED";
         const title = cdDeckOverride?.title ?? source?.title ?? selectedTitle;
         const status = cdDeckOverride?.status ?? (
@@ -131,7 +193,7 @@
                 ? state.playback.action === "play" ? "PLAYING VIDEO" : "PAUSED"
                 : selectedFile ? "DISC READY" : "READY TO LOAD"
         );
-        const isLoading = status === "LOADING VIDEO" || status === "CHECKING LINK";
+        const isLoading = status === "LOADING VIDEO" || status === "CHECKING LINK" || status === "ADDING SONG";
         const isPlaying = status === "PLAYING VIDEO";
 
         cdTrackTitle.textContent = title || "NO DISC LOADED";
@@ -151,19 +213,404 @@
         updateCdDeck();
     }
 
-    function setTab(type) {
-        const uploadActive = type === "upload";
-        uploadTab.classList.toggle("active", uploadActive);
-        youtubeTab.classList.toggle("active", !uploadActive);
-        uploadTab.setAttribute("aria-selected", String(uploadActive));
-        youtubeTab.setAttribute("aria-selected", String(!uploadActive));
-        uploadPanel.classList.toggle("hidden", !uploadActive);
-        youtubePanel.classList.toggle("hidden", uploadActive);
+    const sourceTabs = [
+        { button: libraryTab, panel: libraryPanel, type: "library" },
+        { button: uploadTab, panel: uploadPanel, type: "upload" }
+    ];
+
+    function setTab(type, moveFocus = false) {
+        sourceTabs.forEach(({ button, panel, type: tabType }) => {
+            const active = tabType === type;
+            button.classList.toggle("active", active);
+            button.setAttribute("aria-selected", String(active));
+            button.tabIndex = active ? 0 : -1;
+            panel.classList.toggle("hidden", !active);
+            if (moveFocus && active) button.focus();
+        });
         clearMessage();
     }
 
-    uploadTab.addEventListener("click", () => setTab("upload"));
-    youtubeTab.addEventListener("click", () => setTab("youtube"));
+    sourceTabs.forEach(({ button, type }) => {
+        button.addEventListener("click", () => setTab(type));
+        button.addEventListener("keydown", (event) => {
+            if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+            event.preventDefault();
+            const currentIndex = sourceTabs.findIndex((tab) => tab.button === button);
+            const nextIndex = event.key === "Home" ? 0
+                : event.key === "End" ? sourceTabs.length - 1
+                    : (currentIndex + (event.key === "ArrowRight" ? 1 : -1) + sourceTabs.length) % sourceTabs.length;
+            setTab(sourceTabs[nextIndex].type, true);
+        });
+    });
+    setTab("library");
+
+    function readStoredList(key) {
+        try {
+            const value = JSON.parse(localStorage.getItem(key) || "[]");
+            return Array.isArray(value) ? [...new Set(value.filter((item) => typeof item === "string"))] : [];
+        } catch (_) {
+            return [];
+        }
+    }
+
+    function persistStoredList(key, values) {
+        try {
+            localStorage.setItem(key, JSON.stringify(values));
+        } catch (_) {
+            showMessage("Your browser could not save this library change.", "error");
+        }
+    }
+
+    function readStoredMap(key) {
+        try {
+            const value = JSON.parse(localStorage.getItem(key) || "{}");
+            if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+            return Object.fromEntries(Object.entries(value).filter(([, offset]) => Number.isFinite(Number(offset))));
+        } catch (_) {
+            return {};
+        }
+    }
+
+    function savedLyricOffset(key) {
+        return key && Number.isFinite(Number(lyricOffsets[key])) ? Number(lyricOffsets[key]) : 0;
+    }
+
+    function saveLyricOffset(key, offset) {
+        if (!key) return;
+        if (Math.abs(offset) < 0.001) delete lyricOffsets[key];
+        else lyricOffsets[key] = offset;
+        try {
+            localStorage.setItem(LYRIC_OFFSETS_KEY, JSON.stringify(lyricOffsets));
+        } catch (_) {
+            showMessage("Your browser could not save this song's lyric timing.", "error");
+        }
+    }
+
+    function createLibraryElement(tagName, className = "", text = "") {
+        const element = document.createElement(tagName);
+        if (className) element.className = className;
+        if (text) element.textContent = text;
+        return element;
+    }
+
+    function findCatalogSong(songId) {
+        return karaokeCatalog.find((song) => song.id === songId);
+    }
+
+    function isUserLibrarySong(song) {
+        return typeof song?.id === "string"
+            && ["user-", "local-", "youtube-"].some((prefix) => song.id.startsWith(prefix));
+    }
+
+    function confirmSongRemoval(song) {
+        if (!removeSongDialog?.showModal) {
+            return Promise.resolve(window.confirm(`Remove ${song.title} from your song library?`));
+        }
+
+        removeSongDialogName.textContent = song.title;
+        removeSongDialogFileNote.hidden = !song.localVideoUrl;
+        removeSongDialog.returnValue = "";
+
+        return new Promise((resolve) => {
+            removeSongDialog.addEventListener("close", () => {
+                resolve(removeSongDialog.returnValue === "remove");
+            }, { once: true });
+            removeSongDialog.showModal();
+            cancelRemoveSongButton.focus();
+        });
+    }
+
+    cancelRemoveSongButton?.addEventListener("click", () => removeSongDialog.close("cancel"));
+    confirmRemoveSongButton?.addEventListener("click", () => removeSongDialog.close("remove"));
+    removeSongDialog?.addEventListener("click", (event) => {
+        if (event.target === removeSongDialog) removeSongDialog.close("cancel");
+    });
+
+    function isPlayableCatalogSong(song) {
+        if (!song) return false;
+        const localMedia = typeof song.localVideoUrl === "string"
+            && song.localVideoUrl.trim() !== ""
+            && !unavailableLocalSongIds.includes(song.id);
+        const videoId = song.video?.videoId;
+        const playableYoutube = typeof videoId === "string"
+            && /^[a-zA-Z0-9_-]{11}$/.test(videoId)
+            && !unavailableYoutubeVideoIds.includes(videoId);
+        return localMedia || playableYoutube;
+    }
+
+    function playCatalogSong(song) {
+        if (!isPlayableCatalogSong(song)) return;
+        removeQueuedSong(song.id);
+
+        if (song?.localVideoUrl) {
+            playLocalAudio(song.localVideoUrl, song.title, song);
+            showMessage(`Playing ${song.title} in Karaokur.`, "success");
+            return;
+        }
+        if (!song?.video?.videoId) return;
+        const title = song.video.title || `${song.title} karaoke`;
+        playYouTubeVideo(song.video.videoId, title, song);
+        showMessage(`Loading ${title}.`, "success");
+    }
+
+    function makeVideoAction(song) {
+        if (isPlayableCatalogSong(song)) {
+            const playButton = createLibraryElement("button", "primary-btn library-action", "Play");
+            playButton.type = "button";
+            playButton.addEventListener("click", () => playCatalogSong(song));
+            return playButton;
+        }
+
+        const unavailable = createLibraryElement("button", "secondary-btn library-action library-video-unavailable", "No video");
+        unavailable.type = "button";
+        unavailable.disabled = true;
+        return unavailable;
+    }
+
+    function toggleFavorite(song) {
+        const position = favoriteSongIds.indexOf(song.id);
+        if (position === -1) favoriteSongIds.push(song.id);
+        else favoriteSongIds.splice(position, 1);
+        persistStoredList(FAVORITES_KEY, favoriteSongIds);
+        renderLibrary();
+    }
+
+    async function removeLibrarySong(song) {
+        if (!isUserLibrarySong(song)) return;
+        if (!await confirmSongRemoval(song)) return;
+
+        try {
+            const body = new URLSearchParams({ id: song.id });
+            const response = await fetch("remove_song.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                body: body.toString()
+            });
+            const result = await parseJsonResponse(response);
+            if (!response.ok || !result.success) throw new Error(result.message || "The song could not be removed.");
+
+            karaokeCatalog = karaokeCatalog.filter((entry) => entry.id !== song.id);
+            favoriteSongIds = favoriteSongIds.filter((id) => id !== song.id);
+            queuedSongIds = queuedSongIds.filter((id) => id !== song.id);
+            persistStoredList(FAVORITES_KEY, favoriteSongIds);
+            persistStoredList(QUEUE_KEY, queuedSongIds);
+            if (state.source?.songId === song.id) stopPlayers();
+            renderQueue();
+            renderLibrary();
+            showMessage(result.fileDeleted === false
+                ? `${song.title} was removed, but its saved media file could not be deleted.`
+                : `${song.title} was removed from your song library.`, "success");
+        } catch (error) {
+            showMessage(error.message || "The song could not be removed from your library.", "error");
+        }
+    }
+
+    function queueSong(song) {
+        if (!isPlayableCatalogSong(song) || queuedSongIds.includes(song.id)) return;
+        queuedSongIds.push(song.id);
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+        renderQueue();
+        renderLibrary();
+    }
+
+    function removeQueuedSong(songId) {
+        const remaining = queuedSongIds.filter((id) => id !== songId);
+        if (remaining.length === queuedSongIds.length) return;
+        queuedSongIds = remaining;
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+        renderQueue();
+        renderLibrary();
+    }
+
+    function playNextQueuedSong() {
+        while (queuedSongIds.length) {
+            const nextSong = findCatalogSong(queuedSongIds.shift());
+            if (!isPlayableCatalogSong(nextSong)) continue;
+
+            persistStoredList(QUEUE_KEY, queuedSongIds);
+            renderQueue();
+            renderLibrary();
+            playCatalogSong(nextSong);
+            return true;
+        }
+
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+        renderQueue();
+        renderLibrary();
+        return false;
+    }
+
+    function renderLibrary() {
+        if (!libraryList) return;
+        const query = librarySearch.value.trim().toLocaleLowerCase();
+        const visibleSongs = karaokeCatalog.filter((song) => {
+            const searchable = [song.title, song.artist].filter(Boolean).join(" ").toLocaleLowerCase();
+            return (!query || searchable.includes(query))
+                && (!showFavoritesOnly || favoriteSongIds.includes(song.id));
+        });
+
+        if (libraryCount) {
+            const visibleCount = visibleSongs.length;
+            const songLabel = `${visibleCount} ${visibleCount === 1 ? "song" : "songs"}`;
+            libraryCount.textContent = showFavoritesOnly
+                ? `${visibleCount} ${visibleCount === 1 ? "favorite" : "favorites"}`
+                : query
+                    ? `${songLabel} found`
+                    : `${karaokeCatalog.length} ${karaokeCatalog.length === 1 ? "song" : "songs"}`;
+        }
+
+        libraryList.replaceChildren();
+        if (!visibleSongs.length) {
+            libraryList.append(createLibraryElement("p", "library-empty", showFavoritesOnly && !favoriteSongIds.length
+                ? "No favorites yet."
+                : query
+                    ? "No songs match that search. Try another title or artist."
+                    : "No songs in your library yet. Add a song to get started."));
+            return;
+        }
+
+        visibleSongs.forEach((song) => {
+            const card = createLibraryElement("article", "library-card");
+            const heading = createLibraryElement("div", "library-card-heading");
+            const title = createLibraryElement("h3", "", song.title);
+            const tools = createLibraryElement("div", "library-card-tools");
+            const isFavorite = favoriteSongIds.includes(song.id);
+            const favoriteButton = createLibraryElement("button", "library-favorite");
+            const favoriteIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const favoritePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            favoriteIcon.setAttribute("viewBox", "0 0 24 24");
+            favoriteIcon.setAttribute("aria-hidden", "true");
+            favoriteIcon.setAttribute("focusable", "false");
+            favoriteIcon.classList.add("library-favorite-icon");
+            favoritePath.setAttribute("d", "M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z");
+            favoriteIcon.append(favoritePath);
+            favoriteButton.append(favoriteIcon);
+            favoriteButton.type = "button";
+            favoriteButton.setAttribute("aria-label", `${isFavorite ? "Remove" : "Add"} ${song.title} ${isFavorite ? "from" : "to"} favorites`);
+            favoriteButton.setAttribute("aria-pressed", String(isFavorite));
+            favoriteButton.addEventListener("click", () => toggleFavorite(song));
+            if (isUserLibrarySong(song)) {
+                const removeButton = createLibraryElement("button", "library-remove-song");
+                const removeIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                removeIcon.setAttribute("viewBox", "0 0 24 24");
+                removeIcon.setAttribute("aria-hidden", "true");
+                removeIcon.setAttribute("focusable", "false");
+                removeIcon.classList.add("library-remove-icon");
+                const removePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                removePath.setAttribute("d", "M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3");
+                removeIcon.append(removePath);
+                removeButton.append(removeIcon);
+                removeButton.type = "button";
+                removeButton.title = "Remove from song library";
+                removeButton.setAttribute("aria-label", `Remove ${song.title} from song library`);
+                removeButton.addEventListener("click", () => removeLibrarySong(song));
+                tools.append(removeButton);
+            }
+            tools.append(favoriteButton);
+            heading.append(title, tools);
+
+            const details = song.artist ? createLibraryElement("p", "library-card-details", song.artist) : null;
+            const actions = createLibraryElement("div", "library-card-actions");
+            actions.append(makeVideoAction(song));
+            if (isPlayableCatalogSong(song)) {
+                const isQueued = queuedSongIds.includes(song.id);
+                const addButton = createLibraryElement("button", "secondary-btn library-action library-queue-add", isQueued ? "Queued" : "Queue");
+                addButton.type = "button";
+                addButton.disabled = isQueued;
+                addButton.setAttribute("aria-label", isQueued ? `${song.title} is queued` : `Add ${song.title} to queue`);
+                addButton.addEventListener("click", () => queueSong(song));
+                actions.append(addButton);
+            } else {
+                actions.querySelector(".library-video-unavailable")?.classList.add("library-video-unavailable-full");
+            }
+
+            card.append(heading);
+            if (details) card.append(details);
+            card.append(actions);
+            libraryList.append(card);
+        });
+    }
+
+    function renderQueue() {
+        if (!queueList) return;
+        queuedSongIds = queuedSongIds.filter((songId, index, values) => {
+            return isPlayableCatalogSong(findCatalogSong(songId)) && values.indexOf(songId) === index;
+        });
+        libraryQueue.hidden = queuedSongIds.length === 0;
+        if (!queuedSongIds.length) libraryQueue.open = false;
+        queueCount.textContent = String(queuedSongIds.length);
+        clearQueueButton.disabled = queuedSongIds.length === 0;
+        queueList.replaceChildren();
+
+        queuedSongIds.forEach((songId, index) => {
+            const song = findCatalogSong(songId);
+            if (!song) return;
+            const item = createLibraryElement("li", `library-queue-item${index === 0 ? " is-next" : ""}`);
+            const number = createLibraryElement("span", "library-queue-number", String(index + 1).padStart(2, "0"));
+            const name = createLibraryElement("span", "library-queue-name", song.title);
+            const actions = createLibraryElement("div", "library-queue-actions");
+            actions.append(makeVideoAction(song));
+            const removeButton = createLibraryElement("button", "library-remove-button", "Remove");
+            removeButton.type = "button";
+            removeButton.setAttribute("aria-label", `Remove ${song.title} from queue`);
+            removeButton.addEventListener("click", () => removeQueuedSong(songId));
+            actions.append(removeButton);
+            item.append(number, name, actions);
+            queueList.append(item);
+        });
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+    }
+
+    async function loadSongCatalog() {
+        try {
+            const [response, userResponse] = await Promise.all([
+                fetch("platinum_catalog.json", { cache: "no-cache" }),
+                fetch("user_songs.json", { cache: "no-cache" }).catch(() => null)
+            ]);
+            if (!response.ok) throw new Error(`Catalog request returned ${response.status}`);
+            const catalog = await response.json();
+            if (!Array.isArray(catalog.songs)) throw new Error("Catalog has no song list");
+            let userSongs = [];
+            if (userResponse?.ok) {
+                try {
+                    const savedLibrary = await userResponse.json();
+                    if (Array.isArray(savedLibrary.songs)) userSongs = savedLibrary.songs;
+                } catch (_) {}
+            }
+            const seenSongKeys = new Set();
+            karaokeCatalog = [...userSongs].reverse().concat(catalog.songs)
+                .filter(isPlayableCatalogSong)
+                .filter((song) => {
+                    const key = `${String(song.title || "").trim().toLocaleLowerCase()}::${String(song.artist || "").trim().toLocaleLowerCase()}`;
+                    if (seenSongKeys.has(key)) return false;
+                    seenSongKeys.add(key);
+                    return true;
+                });
+            favoriteSongIds = favoriteSongIds.filter((id) => findCatalogSong(id));
+            if (userResponse?.ok && state.source?.songId && !findCatalogSong(state.source.songId)) {
+                stopPlayers();
+            }
+            renderLibrary();
+            renderQueue();
+        } catch (_) {
+            libraryList.replaceChildren(createLibraryElement("p", "library-empty", "Couldn’t load songs. Refresh to try again."));
+        }
+    }
+
+    librarySearch.addEventListener("input", renderLibrary);
+    favoritesFilter.addEventListener("click", () => {
+        showFavoritesOnly = !showFavoritesOnly;
+        favoritesFilter.setAttribute("aria-pressed", String(showFavoritesOnly));
+        favoritesFilter.classList.toggle("active", showFavoritesOnly);
+        renderLibrary();
+    });
+    clearQueueButton.addEventListener("click", () => {
+        queuedSongIds = [];
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+        renderQueue();
+        renderLibrary();
+    });
+    const songCatalogReady = loadSongCatalog();
 
     function publishState() {
         state.sentAt = Date.now();
@@ -183,17 +630,17 @@
     }
 
     function validateFile(file) {
-        if (!file) return "Please choose a video first.";
+        if (!file) return "Please choose a video or song first.";
         const extension = getExtension(file.name);
         if (!ALLOWED_TYPES.includes(file.type) && !ALLOWED_EXTENSIONS.includes(extension)) {
-            return "Only MP4, WebM, and OGG video files are allowed.";
+            return "Use MP4, WebM, OGG, MP3, WAV, or M4A files.";
         }
-        if (file.size > MAX_FILE_SIZE) return "The video is larger than 500 MB.";
+        if (file.size > MAX_FILE_SIZE) return "The file is larger than 500 MB.";
         return "";
     }
 
     function getUploadTitle(file) {
-        return file.name.replace(/\.[^.]+$/, "") || "Uploaded karaoke video";
+        return songTitle.value.trim() || file.name.replace(/\.[^.]+$/, "") || "Uploaded song";
     }
 
     videoFile.addEventListener("change", () => {
@@ -202,12 +649,17 @@
         const error = validateFile(file);
         if (file && error) {
             showMessage(error, "error");
-            setCdDeckOverride("INVALID VIDEO", file.name);
+            setCdDeckOverride("INVALID FILE", file.name);
         } else {
             clearMessage();
             if (file) setCdDeckOverride("DISC SELECTED", getUploadTitle(file));
             else clearCdDeckOverride();
         }
+    });
+
+    songTitle.addEventListener("input", () => {
+        const file = videoFile.files[0];
+        if (file) setCdDeckOverride("DISC SELECTED", getUploadTitle(file));
     });
 
     ["dragenter", "dragover"].forEach((eventName) => {
@@ -233,64 +685,238 @@
         videoFile.dispatchEvent(new Event("change"));
     });
 
-    uploadForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const file = videoFile.files[0];
-        const validationError = validateFile(file);
-        if (validationError) {
-            showMessage(validationError, "error");
+    function selectedSongSource() {
+        return uploadForm.querySelector('input[name="songSource"]:checked')?.value || "youtube";
+    }
+
+    function syncLyricsLookupRequirements(openForAutomaticLookup = false) {
+        const isYouTube = selectedSongSource() === "youtube";
+        const automaticLookup = isYouTube && !songLyrics.value.trim();
+        songTitle.required = !isYouTube || automaticLookup;
+        songArtist.required = !isYouTube;
+        if (automaticLookup && openForAutomaticLookup) songDetails.open = true;
+        songDetailsSummary.textContent = isYouTube
+            ? automaticLookup ? "Song details (title required; artist optional)" : "Song details (optional with pasted lyrics)"
+            : "Song details";
+    }
+
+    function updateSongSourceFields() {
+        const isYouTube = selectedSongSource() === "youtube";
+        youtubeSongFields.classList.toggle("hidden", !isYouTube);
+        fileSongFields.classList.toggle("hidden", isYouTube);
+        youtubeUrl.required = isYouTube;
+        songLyrics.required = false;
+        videoFile.required = false;
+        songDetails.open = !isYouTube || !songLyrics.value.trim() || Boolean(songTitle.value.trim() || songArtist.value.trim());
+        syncLyricsLookupRequirements();
+        clearMessage();
+    }
+
+    songLyrics.addEventListener("input", () => syncLyricsLookupRequirements(true));
+    uploadForm.querySelectorAll('input[name="songSource"]').forEach((input) => {
+        input.addEventListener("change", updateSongSourceFields);
+    });
+    updateSongSourceFields();
+
+    function renderYouTubeSearchResults(results) {
+        youtubeSearchResultList.replaceChildren();
+        if (!results.length) {
+            youtubeSearchStatus.textContent = "No playable karaoke or instrumental videos matched. Try checking the title or artist.";
             return;
         }
 
-        const formData = new FormData();
-        formData.append("video", file);
-        setBusy(uploadButton, true, "Uploading...");
-        showMessage("Uploading and checking your video...", "success");
-        setCdDeckOverride("LOADING VIDEO", getUploadTitle(file));
+        youtubeSearchStatus.textContent = `Choose a video. Karaokur will match your lyrics to available timing when you add it.`;
+        results.forEach((candidate) => {
+            const result = createLibraryElement("article", "youtube-search-result");
+            if (selectedYouTubeCandidate?.videoId === candidate.videoId) result.classList.add("is-selected");
+
+            if (candidate.thumbnailUrl) {
+                const thumbnail = document.createElement("img");
+                thumbnail.className = "youtube-search-thumbnail";
+                thumbnail.src = candidate.thumbnailUrl;
+                thumbnail.alt = "";
+                thumbnail.loading = "lazy";
+                result.append(thumbnail);
+            }
+
+            const details = createLibraryElement("div", "youtube-search-details");
+            details.append(
+                createLibraryElement("p", "youtube-search-title", candidate.title || "YouTube video"),
+                createLibraryElement("p", "youtube-search-channel", candidate.channel || "YouTube")
+            );
+
+            const chooseButton = createLibraryElement("button", "secondary-btn youtube-search-select", "Use this video");
+            chooseButton.type = "button";
+            chooseButton.setAttribute("aria-pressed", String(selectedYouTubeCandidate?.videoId === candidate.videoId));
+            chooseButton.addEventListener("click", () => {
+                selectedYouTubeCandidate = candidate;
+                youtubeUrl.value = candidate.url;
+                youtubeSearchResultList.querySelectorAll(".youtube-search-result").forEach((item) => item.classList.remove("is-selected"));
+                youtubeSearchResultList.querySelectorAll(".youtube-search-select").forEach((button) => {
+                    button.textContent = "Use this video";
+                    button.setAttribute("aria-pressed", "false");
+                });
+                result.classList.add("is-selected");
+                chooseButton.textContent = "Selected";
+                chooseButton.setAttribute("aria-pressed", "true");
+                showMessage("Video selected. Add it to the library to match and sync the lyrics.", "success");
+            });
+
+            details.append(chooseButton);
+            result.append(details);
+            youtubeSearchResultList.append(result);
+        });
+    }
+
+    findInstrumentalButton.addEventListener("click", async () => {
+        const title = songTitle.value.trim();
+        const artist = songArtist.value.trim();
+        const lyrics = songLyrics.value.trim();
+        songDetails.open = true;
+        syncLyricsLookupRequirements();
+
+        if (!title) {
+            showMessage("Enter the song title in Song details before searching.", "error");
+            songTitle.focus();
+            return;
+        }
+        selectedYouTubeCandidate = null;
+        youtubeSearchResultList.replaceChildren();
+        youtubeSearchResults.classList.remove("hidden");
+        youtubeSearchStatus.textContent = "Searching for playable karaoke and instrumental videos…";
+        setBusy(findInstrumentalButton, true, "Searching…");
+        clearMessage();
 
         try {
-            const response = await fetch("upload.php", { method: "POST", body: formData });
+            const response = await fetch("search_youtube.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                body: new URLSearchParams({ title, artist, lyrics }).toString()
+            });
             const result = await parseJsonResponse(response);
-            if (!response.ok || !result.success) throw new Error(result.message || "The upload failed.");
-            playLocalVideo(result.file, getUploadTitle(file));
-            showMessage("Video loaded successfully.", "success");
+            if (!response.ok || !result.success) throw new Error(result.message || "YouTube search could not be completed.");
+            renderYouTubeSearchResults(Array.isArray(result.results) ? result.results : []);
         } catch (error) {
-            showMessage(error.message || "The upload failed.", "error");
+            youtubeSearchStatus.textContent = error.message || "YouTube search could not be completed.";
+            showMessage(error.message || "YouTube search could not be completed.", "error");
         } finally {
-            clearCdDeckOverride();
-            setBusy(uploadButton, false, controlMode === "hardware" ? "Load Disc" : "Load Video");
+            setBusy(findInstrumentalButton, false, "Find an instrumental");
         }
     });
 
-    youtubeForm.addEventListener("submit", async (event) => {
+    youtubeUrl.addEventListener("input", () => {
+        if (selectedYouTubeCandidate && youtubeUrl.value.trim() !== selectedYouTubeCandidate.url) {
+            selectedYouTubeCandidate = null;
+            youtubeSearchResultList.querySelectorAll(".youtube-search-result").forEach((item) => item.classList.remove("is-selected"));
+            youtubeSearchResultList.querySelectorAll(".youtube-search-select").forEach((button) => {
+                button.textContent = "Use this video";
+                button.setAttribute("aria-pressed", "false");
+            });
+        }
+    });
+
+    async function addSongToVisibleLibrary(song) {
+        await songCatalogReady;
+        if (!isPlayableCatalogSong(song)) throw new Error("The saved song could not be played.");
+        const songKey = `${String(song.title).trim().toLocaleLowerCase()}::${String(song.artist).trim().toLocaleLowerCase()}`;
+        karaokeCatalog = [song, ...karaokeCatalog.filter((entry) => {
+            const entryKey = `${String(entry.title).trim().toLocaleLowerCase()}::${String(entry.artist).trim().toLocaleLowerCase()}`;
+            return entry.id !== song.id && entryKey !== songKey;
+        })];
+        showFavoritesOnly = false;
+        favoritesFilter.setAttribute("aria-pressed", "false");
+        favoritesFilter.classList.remove("active");
+        librarySearch.value = "";
+        renderLibrary();
+        renderQueue();
+        uploadForm.reset();
+        selectedYouTubeCandidate = null;
+        youtubeSearchResults.classList.add("hidden");
+        youtubeSearchStatus.textContent = "";
+        youtubeSearchResultList.replaceChildren();
+        selectedFile.textContent = "No file selected";
+        updateSongSourceFields();
+        setTab("library");
+    }
+
+    uploadForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const url = youtubeUrl.value.trim();
-        if (!url) {
+        const title = songTitle.value.trim();
+        const artist = songArtist.value.trim();
+        const isYouTube = selectedSongSource() === "youtube";
+        const file = videoFile.files[0];
+        if (!isYouTube && (!title || !artist)) {
+            showMessage("Enter both the song title and artist.", "error");
+            return;
+        }
+        if (!isYouTube) {
+            const validationError = validateFile(file);
+            if (validationError) {
+                showMessage(validationError, "error");
+                return;
+            }
+        } else if (!youtubeUrl.value.trim()) {
             showMessage("Paste a YouTube link first.", "error");
             return;
         }
 
-        setBusy(youtubeButton, true, "Checking...");
-        showMessage("Validating YouTube link...", "success");
-        setCdDeckOverride("CHECKING LINK", "YOUTUBE STREAM");
+        const automaticLyricsLookup = isYouTube && !songLyrics.value.trim();
+        setBusy(uploadButton, true, isYouTube ? automaticLyricsLookup ? "Adding song..." : "Matching lyrics..." : "Matching lyrics...");
+        showMessage(isYouTube
+            ? automaticLyricsLookup ? "Adding the song and checking for timed lyrics..." : "Matching your lyrics with available song timing..."
+            : "Finding timed lyrics and adding your song...", "success");
+        setCdDeckOverride("ADDING SONG", title || "YOUTUBE SONG");
+
         try {
-            const body = new URLSearchParams();
-            body.set("url", url);
-            const response = await fetch("validate_youtube.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                body: body.toString()
-            });
-            const result = await parseJsonResponse(response);
-            if (!response.ok || !result.success) throw new Error(result.message || "Invalid YouTube link.");
-            playYouTubeVideo(result.videoId, `YouTube karaoke • ${result.videoId}`);
-            fetchYouTubeTitle(result.videoId);
-            showMessage("YouTube video loaded successfully.", "success");
+            let response;
+            let result;
+            if (isYouTube) {
+                const candidate = selectedYouTubeCandidate;
+                const body = candidate
+                    ? new URLSearchParams({ videoId: candidate.videoId })
+                    : new URLSearchParams({ url: youtubeUrl.value.trim() });
+                response = await fetch("validate_youtube.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    body: body.toString()
+                });
+                result = await parseJsonResponse(response);
+                if (!response.ok || !result.success) throw new Error(result.message || "Invalid YouTube link.");
+
+                body.delete("url");
+                body.set("videoId", result.videoId);
+                body.set("title", title);
+                body.set("artist", artist);
+                body.set("videoTitle", typeof result.title === "string" && result.title ? result.title : (candidate?.title || ""));
+                body.set("lyrics", songLyrics.value.trim());
+                response = await fetch("add_youtube_song.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    body: body.toString()
+                });
+            } else {
+                const formData = new FormData();
+                formData.append("video", file);
+                formData.append("title", title);
+                formData.append("artist", artist);
+                formData.append("lyrics", fileSongLyrics.value.trim());
+                response = await fetch("upload.php", { method: "POST", body: formData });
+            }
+            result = await parseJsonResponse(response);
+            if (!response.ok || !result.success) throw new Error(result.message || "The song could not be added.");
+            await addSongToVisibleLibrary(result.song);
+            showMessage(isYouTube
+                ? result.lyricsFound
+                    ? `${result.song.title} was added with synced lyrics${automaticLyricsLookup ? " found automatically" : ""}.`
+                    : `${result.song.title} was added and is ready to play. No timed lyrics were found, so lyrics will not appear.`
+                : result.lyricsFound
+                    ? `${title} by ${artist} was added with timed lyrics.`
+                    : `${title} by ${artist} was added and is ready to play. No timed lyrics were found, so lyrics will not appear.`, "success");
         } catch (error) {
-            showMessage(error.message || "Invalid YouTube link.", "error");
+            showMessage(error.message || "The song could not be added to your library.", "error");
         } finally {
             clearCdDeckOverride();
-            setBusy(youtubeButton, false, controlMode === "hardware" ? "Load Stream" : "Load YouTube Video");
+            setBusy(uploadButton, false, "Add to Song Library");
         }
     });
 
@@ -333,7 +959,7 @@
         return youtubeApiPromise;
     }
 
-    function youtubeEmbedUrl(videoId, showNativeControls = false) {
+    function youtubeEmbedUrl(videoId, showNativeControls = true) {
         const origin = encodeURIComponent(window.location.origin);
         const controls = showNativeControls ? 1 : 0;
         return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&controls=${controls}&playsinline=1&rel=0&enablejsapi=1&origin=${origin}`;
@@ -380,6 +1006,74 @@
         };
     }
 
+    function updateSyncedLyrics(currentTime = 0, duration = 0) {
+        const source = state.source;
+        const cues = source?.lyricCues;
+        if (!Array.isArray(cues) || !cues.length) {
+            syncedLyrics.hidden = true;
+            lyricsVisibilityToggle.hidden = true;
+            lyricsSyncControls.hidden = true;
+            return;
+        }
+
+        lyricsVisibilityToggle.hidden = false;
+        lyricsSyncControls.hidden = false;
+        const offset = Number(source.lyricOffsetSeconds) || 0;
+        if (document.activeElement !== lyricsSyncRange) lyricsSyncRange.value = String(offset);
+        const offsetLabel = `${offset > 0 ? "+" : ""}${offset.toFixed(2)} s`;
+        if (lyricsSyncValue.textContent !== offsetLabel) lyricsSyncValue.textContent = offsetLabel;
+        lyricsSyncReset.disabled = Math.abs(offset) < 0.001;
+        const lyricsVisible = state.lyricsVisible !== false;
+        syncedLyrics.hidden = !lyricsVisible;
+        lyricsVisibilityToggle.setAttribute("aria-pressed", String(lyricsVisible));
+        lyricsVisibilityToggle.setAttribute("aria-label", lyricsVisible ? "Hide lyrics" : "Show lyrics");
+        lyricsVisibilityToggle.title = lyricsVisible ? "Hide lyrics" : "Show lyrics";
+        const label = lyricsVisible ? "Hide lyrics" : "Show lyrics";
+        if (lyricsVisibilityLabel.textContent !== label) lyricsVisibilityLabel.textContent = label;
+        if (!lyricsVisible) return;
+
+        const lyricTime = currentTime - offset;
+        let activeIndex = -1;
+        for (let index = 0; index < cues.length; index++) {
+            if (Number(cues[index].start) > lyricTime) break;
+            activeIndex = index;
+        }
+        if (activeIndex < 0) {
+            currentLyric.textContent = "Lyrics begin shortly…";
+        } else if (window.KaraokurLyricDisplay) {
+            window.KaraokurLyricDisplay.renderCurrentLine(currentLyric, cues, activeIndex, lyricTime, duration);
+        } else {
+            currentLyric.textContent = String(cues[activeIndex].text || "");
+        }
+        nextLyric.textContent = String(cues[activeIndex + 1]?.text || "");
+
+        const referenceDuration = Number(source.timingReferenceDuration);
+        lyricNote.textContent = duration > 0 && referenceDuration > 0 && Math.abs(duration - referenceDuration) > 12
+            ? "This video differs from the timing source. Use Sync to adjust a fixed delay."
+            : "";
+    }
+
+    lyricsVisibilityToggle.addEventListener("click", () => {
+        state.lyricsVisible = state.lyricsVisible === false;
+        updatePlaybackControls();
+        publishState();
+    });
+
+    function setLyricOffset(value) {
+        const source = state.source;
+        if (!source || !Array.isArray(source.lyricCues) || !source.lyricCues.length) return;
+        const bounded = Math.max(-30, Math.min(30, Number(value) || 0));
+        const offset = Math.round(bounded * 4) / 4;
+        source.lyricOffsetSeconds = Object.is(offset, -0) ? 0 : offset;
+        saveLyricOffset(source.lyricOffsetKey, source.lyricOffsetSeconds);
+        const details = getPlaybackDetails();
+        updateSyncedLyrics(details.currentTime, details.duration);
+        publishState();
+    }
+
+    lyricsSyncRange.addEventListener("input", () => setLyricOffset(lyricsSyncRange.value));
+    lyricsSyncReset.addEventListener("click", () => setLyricOffset(0));
+
     function syncPlaybackSpeedOptions() {
         const isYouTube = state.source?.type === "youtube";
         const availableRates = isYouTube ? supportedYoutubeRates : [0.5, 0.75, 1, 1.25, 1.5, 2];
@@ -400,7 +1094,8 @@
         const isPlaying = typeof isPlayingOverride === "boolean" ? isPlayingOverride : details.isPlaying;
         const hasDuration = Number.isFinite(duration) && duration > 0;
 
-        playbackControls.classList.toggle("hidden", !canControl);
+        playbackControls.classList.toggle("hidden", !canControl || state.source?.type === "youtube");
+        syncPlaybackControlsVisibility(canControl, isPlaying);
         playPauseButton.disabled = !canControl;
         rewindButton.disabled = !canControl || !hasDuration;
         forwardButton.disabled = !canControl || !hasDuration;
@@ -417,12 +1112,61 @@
             playbackSeek.value = "0";
         }
 
+        updateSyncedLyrics(currentTime, duration);
+
         return { currentTime, duration, isPlaying };
     }
 
+    function clearPlaybackControlsHideTimer() {
+        if (playbackControlsHideTimer) window.clearTimeout(playbackControlsHideTimer);
+        playbackControlsHideTimer = null;
+    }
+
+    function revealPlaybackControls() {
+        playbackControls.classList.remove("is-idle");
+        clearPlaybackControlsHideTimer();
+        const autoHideSource = state.source?.type === "upload" || state.source?.type === "youtube";
+        if (!autoHideSource || !getPlaybackDetails().isPlaying) return;
+
+        playbackControlsHideTimer = window.setTimeout(() => {
+            playbackControlsHideTimer = null;
+            if (
+                (state.source?.type === "upload" || state.source?.type === "youtube") &&
+                getPlaybackDetails().isPlaying &&
+                !playbackControls.matches(":focus-within")
+            ) {
+                playbackControls.classList.add("is-idle");
+            }
+        }, 2600);
+    }
+
+    function syncPlaybackControlsVisibility(canControl, isPlaying) {
+        const sourceType = state.source?.type;
+        const canAutoHide = canControl && sourceType === "upload";
+        crtScreen.classList.remove("youtube-playback-active");
+        if (!canAutoHide || !isPlaying) {
+            playbackControlsWerePlaying = false;
+            clearPlaybackControlsHideTimer();
+            playbackControls.classList.remove("is-idle");
+            return;
+        }
+
+        if (!playbackControlsWerePlaying) {
+            playbackControlsWerePlaying = true;
+            revealPlaybackControls();
+        }
+    }
+
+    crtScreen.addEventListener("pointermove", revealPlaybackControls, { passive: true });
+    crtScreen.addEventListener("pointerdown", revealPlaybackControls);
+    playbackControls.addEventListener("focusin", revealPlaybackControls);
+    playbackControls.addEventListener("focusout", (event) => {
+        if (!playbackControls.contains(event.relatedTarget)) revealPlaybackControls();
+    });
+
     function setPlaybackButtonState(isPlaying) {
-        playPauseButton.setAttribute("aria-label", isPlaying ? "Pause video" : "Play video");
-        playPauseButton.title = isPlaying ? "Pause video" : "Play video";
+        playPauseButton.setAttribute("aria-label", isPlaying ? "Pause song" : "Play song");
+        playPauseButton.title = isPlaying ? "Pause song" : "Play song";
         playIcon.toggleAttribute("hidden", isPlaying);
         pauseIcon.toggleAttribute("hidden", !isPlaying);
     }
@@ -433,9 +1177,9 @@
         const supportsFullscreen = Boolean(crtScreen.requestFullscreen || crtScreen.webkitRequestFullscreen);
 
         fullscreenButton.disabled = !supportsFullscreen;
-        fullscreenButton.setAttribute("aria-label", isFullscreen ? "Exit full screen" : "Maximize video");
+        fullscreenButton.setAttribute("aria-label", isFullscreen ? "Exit full screen" : "Maximize karaoke player");
         fullscreenButton.setAttribute("aria-pressed", String(isFullscreen));
-        fullscreenButton.title = isFullscreen ? "Exit full screen" : "Maximize video";
+        fullscreenButton.title = isFullscreen ? "Exit full screen" : "Maximize karaoke player";
         fullscreenIcon.toggleAttribute("hidden", isFullscreen);
         exitFullscreenIcon.toggleAttribute("hidden", !isFullscreen);
     }
@@ -477,6 +1221,7 @@
         if (state.source?.type !== "youtube" || state.cleared) return;
 
         const playerState = event.data;
+        if (playerState === window.YT.PlayerState.ENDED && playNextQueuedSong()) return;
         const playing = playerState === window.YT.PlayerState.PLAYING || playerState === window.YT.PlayerState.BUFFERING;
         const stopped = playerState === window.YT.PlayerState.PAUSED || playerState === window.YT.PlayerState.ENDED;
         const currentTime = event.target.getCurrentTime() || 0;
@@ -491,6 +1236,46 @@
             updatePlayback("pause", currentTime);
             updatePlaybackControls();
         }
+    }
+
+    function markLocalSongUnavailable(songId, requestId) {
+        if (!songId || state.source?.requestId !== requestId) return false;
+        const song = findCatalogSong(songId);
+        if (!song) return false;
+
+        unavailableLocalSongIds = [...new Set([...unavailableLocalSongIds, songId])];
+        karaokeCatalog = karaokeCatalog.filter((entry) => entry.id !== songId);
+        favoriteSongIds = favoriteSongIds.filter((id) => id !== songId);
+        queuedSongIds = queuedSongIds.filter((id) => id !== songId);
+        persistStoredList(UNAVAILABLE_LOCAL_KEY, unavailableLocalSongIds);
+        persistStoredList(FAVORITES_KEY, favoriteSongIds);
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+        renderQueue();
+        renderLibrary();
+        stopPlayers();
+        showMessage(`${song.title} could not play in this browser and was removed from the library.`, "error");
+        return true;
+    }
+
+    function markYouTubeVideoUnavailable(videoId) {
+        const affectedSongs = karaokeCatalog.filter((song) => song.video?.videoId === videoId);
+        if (!affectedSongs.length) return false;
+
+        const removedIds = new Set(affectedSongs.map((song) => song.id));
+        unavailableYoutubeVideoIds = [...new Set([...unavailableYoutubeVideoIds, videoId])];
+        karaokeCatalog = karaokeCatalog.filter((song) => !removedIds.has(song.id));
+        favoriteSongIds = favoriteSongIds.filter((songId) => !removedIds.has(songId));
+        queuedSongIds = queuedSongIds.filter((songId) => !removedIds.has(songId));
+        persistStoredList(UNAVAILABLE_YOUTUBE_KEY, unavailableYoutubeVideoIds);
+        persistStoredList(FAVORITES_KEY, favoriteSongIds);
+        persistStoredList(QUEUE_KEY, queuedSongIds);
+        renderQueue();
+        renderLibrary();
+
+        const title = affectedSongs[0].title;
+        if (state.source?.videoId === videoId) stopPlayers();
+        showMessage(`${title} cannot play in Karaokur and was removed from the library.`, "error");
+        return true;
     }
 
     function handleYouTubePlaybackRateChange(event) {
@@ -515,14 +1300,81 @@
         updatePlaybackControls();
     }
 
-    function playLocalVideo(fileUrl, title) {
-        playbackRequestId += 1;
+    function chooseAmbientFootage() {
+        let candidates = CALMING_FOOTAGE.filter((url) => !unavailableAmbientFootage.has(url) && url !== lastAmbientFootageUrl);
+        if (!candidates.length) candidates = CALMING_FOOTAGE.filter((url) => !unavailableAmbientFootage.has(url));
+        if (!candidates.length) return "";
+        const url = candidates[Math.floor(Math.random() * candidates.length)];
+        lastAmbientFootageUrl = url;
+        return url;
+    }
+
+    function startAmbientFootage(url) {
+        ambientFootageActive = Boolean(url);
+        if (!url) {
+            ambientFootage.hidden = true;
+            return;
+        }
+        ambientFootage.dataset.clipUrl = url;
+        ambientFootage.hidden = false;
+        ambientFootage.src = url;
+        ambientFootage.load();
+        ambientFootage.play().catch(() => {});
+    }
+
+    function handleAmbientFootageError(url) {
+        if (!ambientFootageActive || !url) return;
+        unavailableAmbientFootage.add(url);
+        const nextUrl = chooseAmbientFootage();
+        if (!nextUrl) {
+            ambientFootage.hidden = true;
+            return;
+        }
+        startAmbientFootage(nextUrl);
+    }
+
+    ambientFootage.addEventListener("error", () => {
+        handleAmbientFootageError(ambientFootage.dataset.clipUrl || "");
+    });
+
+    function stopAmbientFootage() {
+        ambientFootageActive = false;
+        ambientFootage.pause();
+        ambientFootage.removeAttribute("src");
+        ambientFootage.load();
+        ambientFootage.hidden = true;
+        delete ambientFootage.dataset.clipUrl;
+    }
+
+    function playLocalAudio(fileUrl, title, song = null) {
+        const requestId = ++playbackRequestId;
+        lyricsSyncControls.open = false;
+        stopAmbientFootage();
+        crtScreen.classList.remove("has-youtube-video");
+        crtScreen.classList.add("has-ambient-visual");
+        currentSong.textContent = title;
+        const visualUrl = chooseAmbientFootage();
+        const lyricOffsetKey = song?.id ? `song:${song.id}` : `upload:${fileUrl}`;
+        state.source = {
+            type: "upload",
+            url: fileUrl,
+            title,
+            songId: song?.id || null,
+            lyricOffsetKey,
+            lyricOffsetSeconds: savedLyricOffset(lyricOffsetKey),
+            requestId,
+            visualUrl,
+            lyricCues: Array.isArray(song?.lyricCues) ? song.lyricCues : [],
+            timingReferenceDuration: song?.timingReferenceDuration || null
+        };
+        state.cleared = false;
         stopYouTubeProgressTimer();
         if (youtubeApiPlayer) youtubeApiPlayer.stopVideo();
         else youtubePlayer.src = "";
         youtubePlayer.hidden = true;
+        startAmbientFootage(visualUrl);
         localPlayer.src = fileUrl;
-        localPlayer.hidden = false;
+        localPlayer.hidden = true;
         idleScreen.hidden = true;
         stopStaticAnimation();
         localPlayer.volume = Number(videoVolume.value) / 100;
@@ -530,16 +1382,17 @@
         playbackSpeed.value = "1";
         localPlayer.load();
         localPlayer.play().catch(() => {});
-        currentSong.textContent = title;
-        state.source = { type: "upload", url: fileUrl, title };
-        state.cleared = false;
         cdDeckOverride = null;
         updatePlaybackControls();
         updatePlayback("play", 0);
     }
 
-    function playYouTubeVideo(videoId, title) {
+    function playYouTubeVideo(videoId, title, song = null) {
         const requestId = ++playbackRequestId;
+        lyricsSyncControls.open = false;
+        crtScreen.classList.add("has-youtube-video");
+        crtScreen.classList.remove("has-ambient-visual");
+        stopAmbientFootage();
         stopYouTubeProgressTimer();
         localPlayer.pause();
         localPlayer.removeAttribute("src");
@@ -549,7 +1402,15 @@
         stopStaticAnimation();
         youtubePlayer.hidden = false;
         currentSong.textContent = title;
-        state.source = { type: "youtube", videoId, title };
+        const lyricOffsetKey = song?.id ? `song:${song.id}` : `video:${videoId}`;
+        state.source = {
+            type: "youtube", videoId, title,
+            songId: song?.id || null,
+            lyricOffsetKey,
+            lyricOffsetSeconds: savedLyricOffset(lyricOffsetKey),
+            lyricCues: Array.isArray(song?.lyricCues) ? song.lyricCues : [],
+            timingReferenceDuration: song?.timingReferenceDuration || null
+        };
         state.cleared = false;
         cdDeckOverride = null;
         playbackSpeed.value = "1";
@@ -600,7 +1461,8 @@
                         },
                         onStateChange: handleYouTubeStateChange,
                         onPlaybackRateChange: handleYouTubePlaybackRateChange,
-                        onError: () => {
+                        onError: (event) => {
+                            if (markYouTubeVideoUnavailable(videoId)) return;
                             if (!ready && !settled) {
                                 settled = true;
                                 window.clearTimeout(readyTimeout);
@@ -655,6 +1517,9 @@
 
     function stopPlayers(shouldPublish = true) {
         playbackRequestId += 1;
+        crtScreen.classList.remove("has-youtube-video");
+        crtScreen.classList.remove("has-ambient-visual");
+        stopAmbientFootage();
         stopYouTubeProgressTimer();
         localPlayer.pause();
         localPlayer.removeAttribute("src");
@@ -675,11 +1540,6 @@
         updatePlaybackControls();
         if (shouldPublish) publishState();
     }
-
-    stopButton.addEventListener("click", () => {
-        stopPlayers();
-        showMessage("Player cleared.", "success");
-    });
 
     function applySettings() {
         state.settings = {
@@ -746,8 +1606,7 @@
             : "Switch to TV knobs and CD player mode");
         controlModeToggle.textContent = hardware ? "SLIDER MODE" : "KNOBS + CD";
 
-        if (!uploadButton.disabled) uploadButton.textContent = hardware ? "Load Disc" : "Load Video";
-        if (!youtubeButton.disabled) youtubeButton.textContent = hardware ? "Load Stream" : "Load YouTube Video";
+        if (!uploadButton.disabled) uploadButton.textContent = "Add to Song Library";
 
         try {
             localStorage.setItem(CONTROL_MODE_KEY, controlMode);
@@ -914,7 +1773,7 @@
             setPlaybackButtonState(true);
             playRequest?.catch(() => {
                 updatePlaybackControls();
-                showMessage("The video could not start. Press play again to retry.", "error");
+                showMessage("The song could not start. Press play again to retry.", "error");
             });
         } else {
             localPlayer.pause();
@@ -965,6 +1824,13 @@
 
     localPlayer.addEventListener("loadedmetadata", updatePlaybackControls);
     localPlayer.addEventListener("durationchange", updatePlaybackControls);
+    localPlayer.addEventListener("error", () => {
+        const source = state.source;
+        if (source?.type !== "upload" || state.cleared || source.requestId !== playbackRequestId) return;
+        if (markLocalSongUnavailable(source.songId, source.requestId)) return;
+        updatePlaybackControls(false);
+        showMessage(`${source.title || "This song"} could not be played. Try a different audio file or a video that has sound.`, "error");
+    });
     localPlayer.addEventListener("play", () => {
         if (state.source?.type !== "upload" || state.cleared) return;
         updatePlaybackControls(true);
@@ -989,7 +1855,10 @@
         updatePlayback(localPlayer.paused ? "pause" : "play", localPlayer.currentTime);
     });
     localPlayer.addEventListener("ended", () => {
-        if (state.source?.type === "upload" && !state.cleared) updatePlaybackControls(false);
+        if (state.source?.type !== "upload" || state.cleared) return;
+        if (playNextQueuedSong()) return;
+        updatePlaybackControls(false);
+        updatePlayback("pause", localPlayer.currentTime);
     });
     localPlayer.addEventListener("timeupdate", () => {
         if (state.source?.type !== "upload" || state.cleared) return;
